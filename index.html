@@ -1,868 +1,349 @@
-```html
 <!DOCTYPE html>
-<html lang="ko" class="dark">
+<html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>iOS 18 Portfolio OS</title>
-  
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- FontAwesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Pretendard Font -->
-  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
-
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
-          },
-          boxShadow: {
-            'phone': '0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 0 12px #1e1e24, 0 0 0 14px #2c2c35',
-            'app': '0 8px 20px -4px rgba(0, 0, 0, 0.4)',
-          }
-        }
-      }
-    }
-  </script>
-
-  <style>
-    /* Custom iOS Scrollbar */
-    .ios-scroll::-webkit-scrollbar { width: 4px; }
-    .ios-scroll::-webkit-scrollbar-thumb { background: rgba(150, 150, 150, 0.3); border-radius: 4px; }
-
-    /* Glassmorphism Effect */
-    .glass {
-      background: rgba(255, 255, 255, 0.22);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-    .dark .glass {
-      background: rgba(24, 24, 30, 0.65);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    /* Spring-like Sheet Modal Animation */
-    .app-modal {
-      transition: transform 0.38s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.25s ease;
-      transform: translateY(100%);
-      opacity: 0;
-      pointer-events: none;
-    }
-    .app-modal.active {
-      transform: translateY(0);
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    /* Lock Screen Slide */
-    .lock-screen {
-      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
-    }
-    .lock-screen.unlocked {
-      transform: translateY(-100%);
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    /* Dynamic Island */
-    .dynamic-island { transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
-    .dynamic-island.expanded { width: 310px !important; height: 68px !important; border-radius: 28px !important; }
-
-    /* Keypad Shake Effect */
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      20%, 60% { transform: translateX(-10px); }
-      40%, 80% { transform: translateX(10px); }
-    }
-    .animate-shake { animation: shake 0.4s ease-in-out; }
-  </style>
-</head>
-<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col items-center justify-center p-2 sm:p-6 select-none overflow-x-hidden">
-
-  <!-- iPhone Frame Outer -->
-  <main class="relative my-auto">
-    <div class="relative w-[365px] h-[780px] sm:w-[390px] sm:h-[820px] bg-black rounded-[54px] shadow-phone p-3.5 border-4 border-slate-800/90 overflow-hidden ring-1 ring-slate-700/50">
-      
-      <!-- Screen Display Area -->
-      <div id="iphone-screen" class="relative w-full h-full rounded-[42px] overflow-hidden bg-cover bg-center transition-all duration-700" style="background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop');">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My iPhone Portfolio</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; user-select: none; }
+        body { background: #0b0f19; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; color: #fff; }
         
-        <!-- Status Bar -->
-        <header class="absolute top-0 left-0 right-0 h-11 px-7 flex items-center justify-between text-white text-xs z-50 pointer-events-none">
-          <span id="status-time" class="font-semibold tracking-tight text-[13px] pointer-events-auto">09:41</span>
-          
-          <!-- Dynamic Island -->
-          <div id="dynamic-island" onclick="toggleDynamicIsland()" class="dynamic-island pointer-events-auto w-28 h-7 bg-black rounded-full flex items-center justify-between px-3 cursor-pointer shadow-lg z-50 hover:scale-105 transition-transform">
-            <div class="flex items-center space-x-1.5" id="di-minified">
-              <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-              <span class="text-[9px] font-medium text-slate-300">Portfolio</span>
-            </div>
-            <div class="w-2.5 h-2.5 rounded-full bg-blue-500" id="di-camera"></div>
+        .iphone { width: 375px; height: 780px; background: #000; border-radius: 52px; border: 12px solid #27272a; position: relative; box-shadow: 0 25px 60px rgba(0,0,0,0.6); overflow: hidden; display: flex; flex-direction: column; }
+        .notch { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 115px; height: 32px; background: #000; border-radius: 20px; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; }
+        .camera { width: 12px; height: 12px; background: #18181b; border-radius: 50%; }
+        
+        .screen { flex: 1; background: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop') center/cover; position: relative; display: flex; flex-direction: column; justify-content: space-between; padding: 55px 20px 20px; }
+        
+        /* Lockscreen */
+        .lock-screen { position: absolute; inset: 0; background: rgba(10, 10, 15, 0.45); backdrop-filter: blur(16px); z-index: 50; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 60px 20px 40px; transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .lock-screen.unlocked { transform: translateY(-100%); }
+        .clock { font-size: 68px; font-weight: 700; text-shadow: 0 4px 20px rgba(0,0,0,0.4); letter-spacing: -2px; }
+        .date { font-size: 16px; font-weight: 500; opacity: 0.9; margin-top: -10px; text-shadow: 0 2px 10px rgba(0,0,0,0.4); text-align: center; }
 
-            <div id="di-expanded-content" class="hidden w-full flex items-center justify-between text-white px-2">
-              <div class="flex items-center space-x-2">
-                <div class="w-7 h-7 rounded-lg bg-pink-500 flex items-center justify-center text-xs">
-                  <i class="fa-solid fa-music"></i>
+        .passcode-container { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-bottom: 20px; width: 100%; }
+        .passcode-title { font-size: 14px; opacity: 0.8; font-weight: 500; }
+        .passcode-dots { display: flex; gap: 12px; margin-bottom: 10px; }
+        .dot { width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid #fff; transition: background 0.2s; }
+        .dot.filled { background: #fff; }
+        .dot.error { border-color: #ef4444; background: #ef4444; }
+
+        .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px 22px; }
+        .key-btn { width: 60px; height: 60px; border-radius: 50%; background: rgba(255,255,255,0.15); border: none; color: #fff; font-size: 24px; font-weight: 500; cursor: pointer; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+        .key-btn:active { background: rgba(255,255,255,0.4); }
+
+        /* Homescreen Grid & Dock */
+        .app-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px 14px; margin-top: 10px; }
+        .dock { background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(20px); border-radius: 30px; padding: 12px 14px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 10px; }
+        .app-item { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; }
+        .app-icon { width: 60px; height: 60px; border-radius: 15px; display: flex; justify-content: center; align-items: center; font-size: 26px; box-shadow: 0 8px 20px rgba(0,0,0,0.3); transition: transform 0.15s; }
+        .app-icon:active { transform: scale(0.88); }
+        .app-name { font-size: 11px; font-weight: 500; text-shadow: 0 1px 4px rgba(0,0,0,0.8); }
+        
+        /* App Colors */
+        .bg-profile { background: linear-gradient(135deg, #38bdf8, #0284c7); }
+        .bg-insta { background: linear-gradient(135deg, #f58529, #dd2a7b, #8134af); }
+        .bg-twitter { background: linear-gradient(135deg, #38bdf8, #0f172a); }
+        .bg-dc { background: linear-gradient(135deg, #2563eb, #1e3a8a); }
+        .bg-guest { background: linear-gradient(135deg, #34d399, #059669); }
+        .bg-memo { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .bg-msg { background: linear-gradient(135deg, #22c55e, #15803d); }
+        .bg-phone { background: linear-gradient(135deg, #10b981, #047857); }
+        .bg-safari { background: linear-gradient(135deg, #0ea5e9, #0284c7); }
+        .bg-music { background: linear-gradient(135deg, #ec4899, #be185d); }
+        .bg-lock { background: linear-gradient(135deg, #64748b, #334155); }
+
+        /* Modal App Sheet */
+        .app-modal { position: absolute; inset: 0; background: #121214; color: #f4f4f5; z-index: 80; border-radius: 44px 44px 0 0; transform: translateY(100%); transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1); display: flex; flex-direction: column; box-shadow: 0 -10px 40px rgba(0,0,0,0.5); }
+        .app-modal.active { transform: translateY(0); }
+        .modal-header { padding: 35px 20px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #27272a; }
+        .modal-title { font-size: 17px; font-weight: 600; }
+        .close-btn { background: #27272a; color: #a1a1aa; border: none; padding: 6px 14px; border-radius: 20px; font-weight: 600; cursor: pointer; font-size: 13px; }
+        .modal-body { padding: 20px; overflow-y: auto; flex: 1; font-size: 14px; line-height: 1.6; }
+
+        /* Message Bubble UI */
+        .chat-list { display: flex; flex-direction: column; gap: 12px; }
+        .chat-bubble { max-width: 80%; padding: 10px 14px; border-radius: 18px; font-size: 14px; line-height: 1.4; }
+        .chat-bubble.me { background: #2563eb; color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
+        .chat-bubble.other { background: #27272a; color: #fff; align-self: flex-start; border-bottom-left-radius: 4px; }
+        .chat-input-box { display: flex; gap: 8px; margin-top: 15px; padding-top: 10px; border-top: 1px solid #27272a; }
+        .chat-input { flex: 1; background: #18181b; border: 1px solid #27272a; color: #fff; padding: 10px 14px; border-radius: 20px; outline: none; font-size: 14px; }
+        .chat-send { background: #2563eb; color: #fff; border: none; padding: 8px 16px; border-radius: 20px; font-weight: 600; cursor: pointer; }
+
+        /* Profile & Buttons */
+        .profile-card { text-align: center; margin-bottom: 20px; }
+        .profile-avatar { width: 80px; height: 80px; border-radius: 50%; background: #3b82f6; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 36px; }
+        .link-btn { display: block; width: 100%; padding: 14px; background: #27272a; color: #fff; text-align: center; border-radius: 14px; text-decoration: none; font-weight: 600; margin-bottom: 10px; }
+        .gb-input { width: 100%; padding: 12px; background: #18181b; border: 1px solid #27272a; color: #fff; border-radius: 12px; margin-bottom: 10px; font-size: 14px; outline: none; }
+        .gb-btn { width: 100%; padding: 12px; background: #3b82f6; color: #fff; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="iphone">
+    <div class="notch"><div class="camera"></div><div style="font-size:10px; opacity:0.8;">9:41</div></div>
+
+    <div class="screen">
+        <!-- 잠금 화면 -->
+        <div class="lock-screen" id="lockScreen">
+            <div>
+                <div class="clock" id="clock">09:41</div>
+                <div class="date" id="date">11월 6일 금요일</div>
+            </div>
+
+            <div class="passcode-container">
+                <div class="passcode-title" id="passcodeTitle">비밀번호 입력 (0000)</div>
+                <div class="passcode-dots">
+                    <div class="dot" id="dot0"></div>
+                    <div class="dot" id="dot1"></div>
+                    <div class="dot" id="dot2"></div>
+                    <div class="dot" id="dot3"></div>
                 </div>
-                <div class="text-left">
-                  <p class="text-[10px] font-bold leading-tight">My Portfolio BGM</p>
-                  <p class="text-[8px] text-slate-400">iOS 18 Soundtrack</p>
+
+                <div class="keypad">
+                    <button class="key-btn" onclick="pressKey('1')">1</button>
+                    <button class="key-btn" onclick="pressKey('2')">2</button>
+                    <button class="key-btn" onclick="pressKey('3')">3</button>
+                    <button class="key-btn" onclick="pressKey('4')">4</button>
+                    <button class="key-btn" onclick="pressKey('5')">5</button>
+                    <button class="key-btn" onclick="pressKey('6')">6</button>
+                    <button class="key-btn" onclick="pressKey('7')">7</button>
+                    <button class="key-btn" onclick="pressKey('8')">8</button>
+                    <button class="key-btn" onclick="pressKey('9')">9</button>
+                    <div></div>
+                    <button class="key-btn" onclick="pressKey('0')">0</button>
+                    <button class="key-btn" style="font-size:13px;" onclick="clearPasscode()">취소</button>
                 </div>
-              </div>
-              <div class="flex items-center space-x-2 text-xs">
-                <i id="music-play-btn" onclick="toggleMusic(event)" class="fa-solid fa-pause text-emerald-400 cursor-pointer"></i>
-              </div>
             </div>
-          </div>
-
-          <div class="flex items-center space-x-1.5 text-[11px] pointer-events-auto">
-            <i class="fa-solid fa-signal"></i>
-            <i class="fa-solid fa-wifi"></i>
-            <i class="fa-solid fa-battery-full text-xs"></i>
-          </div>
-        </header>
-
-        <!-- ================= LOCK SCREEN (PASSCODE: 0000) ================= -->
-        <div id="lock-screen" class="lock-screen absolute inset-0 z-40 bg-black/40 backdrop-blur-md flex flex-col justify-between pt-14 pb-8 px-6 text-white text-center">
-          <div class="space-y-1">
-            <p id="lock-date" class="text-xs font-semibold tracking-wide uppercase text-slate-200">11월 6일 금요일</p>
-            <h1 id="lock-time" class="text-6xl font-bold tracking-tighter drop-shadow-md font-sans">09:41</h1>
-          </div>
-
-          <!-- Passcode Pad Container -->
-          <div class="w-full flex flex-col items-center space-y-4 mb-4" id="passcode-box">
-            <div id="passcode-status-text" class="text-xs font-semibold text-slate-200 tracking-tight">암호를 입력하세요 (0000)</div>
-            
-            <!-- Dots -->
-            <div class="flex space-x-3.5" id="passcode-dots">
-              <div class="w-3 h-3 rounded-full border border-white/80 transition-all duration-200"></div>
-              <div class="w-3 h-3 rounded-full border border-white/80 transition-all duration-200"></div>
-              <div class="w-3 h-3 rounded-full border border-white/80 transition-all duration-200"></div>
-              <div class="w-3 h-3 rounded-full border border-white/80 transition-all duration-200"></div>
-            </div>
-
-            <!-- Keypad Grid -->
-            <div class="grid grid-cols-3 gap-3.5 w-64 pt-2">
-              <button onclick="pressPasscodeKey('1')" class="w-16 h-16 rounded-full glass hover:bg-white/30 active:bg-white/40 flex items-center justify-center text-xl font-medium mx-auto">1</button>
-              <button onclick="pressPasscodeKey('2')" class="w-16 h-16 rounded-full glass hover:bg-white/30 active:bg-white/40 flex items-center justify-center text-xl font-medium mx-auto">2</button>
-              <button onclick="pressPasscodeKey('3')" class="w-16 h-16 rounded-full glass hover:bg-white/30 active:bg-white/40 flex items-center justify-center text-xl font-medium mx-auto">3</button>
-              <button onclick="pressPasscodeKey('4')" class="w-16 h-16 rounded-full glass hover:bg-white/30 active:bg-white/40 flex items-center justify-center text-xl font-medium mx-auto">4</button>
-              <button onclick="pressPasscodeKey('5')" class="w-16 h-16 rounded-full glass hover:bg-white/30 active:bg-white/40 flex items-center justify-center text-xl font-medium mx-auto">5</button>
-              <button onclick="pressPasscodeKey('6')" class="w-16 h-16 rounded-full glass hover:bg-white/30 active:bg-white/40 flex items-center justify-center text-xl font-medium mx-auto">6</button>
-              <button onclick="pressPasscodeKey('7')" class="w-16 h-16 rounded-full glass hover:bg-white/30 active:bg-white/40 flex items-center justify-center text-xl font-medium mx-auto">7</button>
-              <button onclick="pressPasscodeKey('8')" class="w-16 h-16 rounded-full glass hover:bg-white/30 active:bg-white/40 flex items-center justify-center text-xl font-medium mx-auto">8</button>
-              <button onclick="pressPasscodeKey('9')" class="w-16 h-16 rounded-full glass hover:bg-white/30 active:bg-white/40 flex items-center justify-center text-xl font-medium mx-auto">9</button>
-              <button onclick="quickBypassUnlock()" class="w-16 h-16 rounded-full glass text-[10px] text-slate-300 flex items-center justify-center mx-auto">패스</button>
-              <button onclick="pressPasscodeKey('0')" class="w-16 h-16 rounded-full glass hover:bg-white/30 active:bg-white/40 flex items-center justify-center text-xl font-medium mx-auto">0</button>
-              <button onclick="clearPasscodeKey()" class="w-16 h-16 rounded-full glass text-xs text-slate-300 flex items-center justify-center mx-auto">지움</button>
-            </div>
-          </div>
         </div>
 
-        <!-- ================= HOME SCREEN ================= -->
-        <div class="pt-14 pb-14 px-4 h-full flex flex-col justify-between overflow-hidden">
-          
-          <!-- Widget Section -->
-          <div class="space-y-3">
-            <div class="glass rounded-3xl p-3.5 text-white flex items-center justify-between shadow-lg">
-              <div>
-                <span class="text-[9px] font-bold uppercase tracking-wider text-blue-400">WELCOME TO MY WORLD</span>
-                <h2 class="text-base font-bold">홍길동의 iOS 18 사이트</h2>
-                <p class="text-[10px] text-slate-300">인스타 · 디시 · 포털 · 방명록 시뮬레이션</p>
-              </div>
-              <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white text-xl shadow-md">
-                <i class="fa-solid fa-mobile-screen-button"></i>
-              </div>
+        <!-- 홈 화면 메인 앱들 -->
+        <div class="app-grid">
+            <div class="app-item" onclick="openApp('profile')">
+                <div class="app-icon bg-profile">👤</div>
+                <div class="app-name">프로필</div>
             </div>
-          </div>
-
-          <!-- Apps Grid (4 Column Layout) -->
-          <div class="grid grid-cols-4 gap-4 my-auto px-1">
-            
-            <!-- App 1: Simulated Instagram -->
-            <button onclick="openApp('app-instagram')" class="flex flex-col items-center group focus:outline-none">
-              <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 flex items-center justify-center text-white text-2xl shadow-app transform group-active:scale-90 transition">
-                <i class="fa-brands fa-instagram"></i>
-              </div>
-              <span class="text-[11px] font-medium text-white drop-shadow-md mt-1">인스타그램</span>
-            </button>
-
-            <!-- App 2: Simulated DCInside -->
-            <button onclick="openApp('app-dcinside')" class="flex flex-col items-center group focus:outline-none">
-              <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-700 to-indigo-900 flex items-center justify-center text-white text-2xl shadow-app transform group-active:scale-90 transition border border-blue-500/30">
-                <i class="fa-solid fa-comments"></i>
-              </div>
-              <span class="text-[11px] font-medium text-white drop-shadow-md mt-1">디시인사이드</span>
-            </button>
-
-            <!-- App 3: Simulated Portal Search Engine -->
-            <button onclick="openApp('app-portal')" class="flex flex-col items-center group focus:outline-none">
-              <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-700 flex items-center justify-center text-white text-2xl shadow-app transform group-active:scale-90 transition">
-                <i class="fa-solid fa-globe"></i>
-              </div>
-              <span class="text-[11px] font-medium text-white drop-shadow-md mt-1">인터넷 포털</span>
-            </button>
-
-            <!-- App 4: Simulated Twitter/X -->
-            <button onclick="openApp('app-twitter')" class="flex flex-col items-center group focus:outline-none">
-              <div class="w-14 h-14 rounded-2xl bg-slate-900 flex items-center justify-center text-white text-2xl shadow-app transform group-active:scale-90 transition border border-slate-700">
-                <i class="fa-brands fa-x-twitter"></i>
-              </div>
-              <span class="text-[11px] font-medium text-white drop-shadow-md mt-1">트위터 (X)</span>
-            </button>
-
-            <!-- App 5: Guestbook -->
-            <button onclick="openApp('app-guestbook')" class="flex flex-col items-center group focus:outline-none">
-              <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-green-400 to-emerald-600 flex items-center justify-center text-white text-2xl shadow-app transform group-active:scale-90 transition">
-                <i class="fa-solid fa-book-bookmark"></i>
-              </div>
-              <span class="text-[11px] font-medium text-white drop-shadow-md mt-1">방명록</span>
-            </button>
-
-            <!-- App 6: Profile / Bio -->
-            <button onclick="openApp('app-profile')" class="flex flex-col items-center group focus:outline-none">
-              <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-sky-400 to-blue-600 flex items-center justify-center text-white text-2xl shadow-app transform group-active:scale-90 transition">
-                <i class="fa-solid fa-user-astronaut"></i>
-              </div>
-              <span class="text-[11px] font-medium text-white drop-shadow-md mt-1">프로필</span>
-            </button>
-
-            <!-- App 7: Lock Lockscreen -->
-            <button onclick="lockPhone()" class="flex flex-col items-center group focus:outline-none">
-              <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-gray-700 to-slate-900 flex items-center justify-center text-white text-2xl shadow-app transform group-active:scale-90 transition border border-slate-600">
-                <i class="fa-solid fa-lock"></i>
-              </div>
-              <span class="text-[11px] font-medium text-white drop-shadow-md mt-1">화면 잠금</span>
-            </button>
-
-          </div>
-
-          <!-- Dock -->
-          <div class="glass rounded-3xl p-2 px-5 flex justify-between items-center max-w-[300px] mx-auto w-full shadow-2xl mb-1">
-            <button onclick="openApp('app-portal')" class="w-11 h-11 rounded-2xl bg-emerald-600 text-white flex items-center justify-center text-lg shadow-md">
-              <i class="fa-solid fa-compass"></i>
-            </button>
-            <button onclick="openApp('app-instagram')" class="w-11 h-11 rounded-2xl bg-rose-600 text-white flex items-center justify-center text-lg shadow-md">
-              <i class="fa-brands fa-instagram"></i>
-            </button>
-            <button onclick="openApp('app-dcinside')" class="w-11 h-11 rounded-2xl bg-blue-800 text-white flex items-center justify-center text-lg shadow-md">
-              <i class="fa-solid fa-message"></i>
-            </button>
-            <button onclick="openApp('app-guestbook')" class="w-11 h-11 rounded-2xl bg-teal-600 text-white flex items-center justify-center text-lg shadow-md">
-              <i class="fa-solid fa-pen-to-square"></i>
-            </button>
-          </div>
-
+            <div class="app-item" onclick="openApp('instagram')">
+                <div class="app-icon bg-insta">📸</div>
+                <div class="app-name">Instagram</div>
+            </div>
+            <div class="app-item" onclick="openApp('twitter')">
+                <div class="app-icon bg-twitter">🐦</div>
+                <div class="app-name">X (트위터)</div>
+            </div>
+            <div class="app-item" onclick="openApp('dcinside')">
+                <div class="app-icon bg-dc">💬</div>
+                <div class="app-name">디시인사이드</div>
+            </div>
+            <div class="app-item" onclick="openApp('guestbook')">
+                <div class="app-icon bg-guest">📝</div>
+                <div class="app-name">방명록</div>
+            </div>
+            <div class="app-item" onclick="openApp('memo')">
+                <div class="app-icon bg-memo">📒</div>
+                <div class="app-name">메모장</div>
+            </div>
+            <div class="app-item" onclick="lock()">
+                <div class="app-icon bg-lock">🔒</div>
+                <div class="app-name">화면 잠금</div>
+            </div>
         </div>
 
-        <!-- ================= APP MODALS (SHEETS) ================= -->
-
-        <!-- 1. Simulated INSTAGRAM App -->
-        <div id="app-instagram" class="app-modal absolute inset-0 bg-black text-white z-40 pt-10 flex flex-col justify-between ios-scroll overflow-y-auto">
-          <div>
-            <!-- Header -->
-            <div class="flex justify-between items-center px-4 py-2 border-b border-zinc-800 sticky top-0 bg-black/90 backdrop-blur z-20">
-              <span class="font-bold text-lg tracking-tight">gildong_official</span>
-              <button onclick="closeApp('app-instagram')" class="w-7 h-7 rounded-full bg-zinc-800 text-xs font-bold">✕</button>
+        <!-- 하단 Dock 바 (문자, 전화, 사파리, 음악) -->
+        <div class="dock">
+            <div class="app-item" onclick="openApp('phone')">
+                <div class="app-icon bg-phone">📞</div>
             </div>
-
-            <!-- Profile Info Header -->
-            <div class="p-4 border-b border-zinc-800">
-              <div class="flex items-center justify-between">
-                <div class="relative">
-                  <div class="w-18 h-18 w-20 h-20 rounded-full p-0.5 bg-gradient-to-tr from-yellow-400 via-rose-500 to-purple-600">
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=300&auto=format&fit=crop" class="w-full h-full object-cover rounded-full border-2 border-black">
-                  </div>
-                </div>
-                <div class="flex space-x-6 text-center text-xs">
-                  <div>
-                    <p class="font-bold text-sm">6</p>
-                    <p class="text-zinc-400">게시물</p>
-                  </div>
-                  <div>
-                    <p class="font-bold text-sm">1.2k</p>
-                    <p class="text-zinc-400">팔로워</p>
-                  </div>
-                  <div>
-                    <p class="font-bold text-sm">340</p>
-                    <p class="text-zinc-400">팔로잉</p>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Bio -->
-              <div class="mt-3 text-xs leading-relaxed">
-                <p class="font-bold">홍길동 | Gildong</p>
-                <p class="text-zinc-300">📱 iOS 포트폴리오 웹 사이트 시뮬레이션</p>
-                <p class="text-blue-400">github.com/Meong228/P5R_</p>
-              </div>
-
-              <div class="flex space-x-2 mt-3">
-                <button class="flex-1 py-1.5 bg-zinc-800 text-xs font-semibold rounded-lg">팔로잉</button>
-                <button class="flex-1 py-1.5 bg-zinc-800 text-xs font-semibold rounded-lg">메시지</button>
-              </div>
+            <div class="app-item" onclick="openApp('messages')">
+                <div class="app-icon bg-msg">💬</div>
             </div>
-
-            <!-- Photo Grid -->
-            <div class="grid grid-cols-3 gap-0.5 pt-0.5" id="insta-grid">
-              <!-- Dynamically Populated or Static -->
-              <div onclick="openInstaDetail(1)" class="aspect-square bg-zinc-800 relative cursor-pointer">
-                <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover">
-              </div>
-              <div onclick="openInstaDetail(2)" class="aspect-square bg-zinc-800 relative cursor-pointer">
-                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover">
-              </div>
-              <div onclick="openInstaDetail(3)" class="aspect-square bg-zinc-800 relative cursor-pointer">
-                <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover">
-              </div>
-              <div onclick="openInstaDetail(4)" class="aspect-square bg-zinc-800 relative cursor-pointer">
-                <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover">
-              </div>
-              <div onclick="openInstaDetail(5)" class="aspect-square bg-zinc-800 relative cursor-pointer">
-                <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover">
-              </div>
-              <div onclick="openInstaDetail(6)" class="aspect-square bg-zinc-800 relative cursor-pointer">
-                <img src="https://images.unsplash.com/photo-1531403009284-440f080d1e12?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover">
-              </div>
+            <div class="app-item" onclick="openApp('safari')">
+                <div class="app-icon bg-safari">🧭</div>
             </div>
-          </div>
-
-          <!-- Insta Detail View Sub-Modal -->
-          <div id="insta-detail-view" class="hidden fixed inset-0 bg-black z-30 flex flex-col justify-between pt-10">
-            <div class="flex items-center justify-between px-4 py-2 border-b border-zinc-800">
-              <button onclick="closeInstaDetail()" class="text-xs text-blue-400 font-bold">← 뒤로가기</button>
-              <span class="text-xs font-bold">게시물</span>
-              <div></div>
+            <div class="app-item" onclick="openApp('music')">
+                <div class="app-icon bg-music">🎵</div>
             </div>
-            <div class="p-4 ios-scroll overflow-y-auto flex-1">
-              <div class="flex items-center space-x-2 mb-3">
-                <div class="w-8 h-8 rounded-full bg-zinc-700 overflow-hidden">
-                  <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=300&auto=format&fit=crop">
-                </div>
-                <span class="text-xs font-bold">gildong_official</span>
-              </div>
-              <img id="insta-detail-img" src="" class="w-full rounded-lg mb-3">
-              <p id="insta-detail-caption" class="text-xs leading-relaxed text-zinc-300 mb-4"></p>
-              
-              <!-- Comments -->
-              <div class="border-t border-zinc-800 pt-3 space-y-2">
-                <p class="text-[11px] font-bold text-zinc-400">댓글 2개</p>
-                <div class="text-xs"><span class="font-bold">friend_a</span> 디자인 대박이네요! 🔥</div>
-                <div class="text-xs"><span class="font-bold">dev_user</span> iOS 18 반응형 완벽합니다.</div>
-              </div>
-            </div>
-          </div>
         </div>
-
-        <!-- 2. Simulated DCINSIDE Gallery App -->
-        <div id="app-dcinside" class="app-modal absolute inset-0 bg-slate-900 text-slate-100 z-40 pt-10 flex flex-col justify-between ios-scroll overflow-y-auto">
-          <div>
-            <!-- Header -->
-            <div class="bg-blue-900 px-4 py-2.5 flex justify-between items-center sticky top-0 z-20 border-b border-blue-800">
-              <div class="flex items-center space-x-2">
-                <span class="bg-blue-600 text-white font-black text-xs px-1.5 py-0.5 rounded">갤러리</span>
-                <span class="font-bold text-sm tracking-tight">개발자 마이너 갤러리</span>
-              </div>
-              <button onclick="closeApp('app-dcinside')" class="w-7 h-7 rounded-full bg-blue-800 text-xs font-bold">✕</button>
-            </div>
-
-            <!-- DC Action Bar -->
-            <div class="p-3 bg-slate-800/80 border-b border-slate-700 flex justify-between items-center text-xs">
-              <span class="text-slate-300 font-semibold">전체글 목록</span>
-              <button onclick="toggleDcWriteForm()" class="px-3 py-1 bg-blue-600 text-white rounded font-bold hover:bg-blue-500">✍️ 글쓰기</button>
-            </div>
-
-            <!-- Write Form (Collapsible) -->
-            <div id="dc-write-form" class="hidden p-3 bg-slate-800 border-b border-slate-700 space-y-2">
-              <input id="dc-input-title" type="text" placeholder="제목을 입력하세요" class="w-full px-2.5 py-1.5 bg-slate-900 border border-slate-700 rounded text-xs focus:outline-none focus:border-blue-500">
-              <textarea id="dc-input-content" placeholder="내용을 작성하세요..." class="w-full px-2.5 py-1.5 bg-slate-900 border border-slate-700 rounded text-xs focus:outline-none focus:border-blue-500 h-16 resize-none"></textarea>
-              <button onclick="submitDcPost()" class="w-full py-1.5 bg-blue-600 text-white text-xs font-bold rounded">등록하기</button>
-            </div>
-
-            <!-- Posts List -->
-            <div id="dc-posts-list" class="divide-y divide-slate-800 text-xs">
-              <!-- Dynamically Populated -->
-            </div>
-          </div>
-
-          <!-- DC Post Detail View Sub-Modal -->
-          <div id="dc-detail-view" class="hidden fixed inset-0 bg-slate-900 z-30 flex flex-col justify-between pt-10">
-            <div class="bg-blue-900 px-4 py-2.5 flex justify-between items-center border-b border-blue-800">
-              <button onclick="closeDcDetail()" class="text-xs text-blue-200 font-bold">← 목록으로</button>
-              <span class="text-xs font-bold">본문 보기</span>
-              <div></div>
-            </div>
-            <div class="p-4 ios-scroll overflow-y-auto flex-1 space-y-3">
-              <h3 id="dc-view-title" class="font-bold text-base text-white"></h3>
-              <div class="flex justify-between text-[11px] text-slate-400 border-b border-slate-800 pb-2">
-                <span id="dc-view-author"></span>
-                <span id="dc-view-date"></span>
-              </div>
-              <p id="dc-view-content" class="text-xs leading-relaxed text-slate-200 py-2"></p>
-              
-              <!-- Recommendation Button -->
-              <div class="flex justify-center py-2">
-                <button onclick="recommendDcPost()" class="px-4 py-2 bg-blue-600/30 border border-blue-500 text-blue-300 rounded-xl text-xs font-bold flex items-center space-x-1">
-                  <span>👍 개념글 추천</span>
-                  <span id="dc-view-recom">0</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 3. Simulated PORTAL / SEARCH ENGINE App -->
-        <div id="app-portal" class="app-modal absolute inset-0 bg-slate-900 text-slate-100 z-40 pt-10 flex flex-col justify-between ios-scroll overflow-y-auto">
-          <div>
-            <!-- Header -->
-            <div class="p-4 bg-slate-950 border-b border-slate-800 sticky top-0 z-20">
-              <div class="flex justify-between items-center mb-3">
-                <span class="font-black text-xl tracking-tighter text-emerald-400">PORTAL<span class="text-white">SEARCH</span></span>
-                <button onclick="closeApp('app-portal')" class="w-7 h-7 rounded-full bg-slate-800 text-xs font-bold">✕</button>
-              </div>
-
-              <!-- Search Bar -->
-              <form onsubmit="handlePortalSearch(event)" class="relative">
-                <input id="portal-search-input" type="text" placeholder="검색어를 입력하세요 (예: 홍길동)" class="w-full py-2 pl-3 pr-9 bg-slate-800 border border-slate-700 rounded-xl text-xs focus:outline-none focus:border-emerald-500">
-                <button type="submit" class="absolute right-2.5 top-2 text-slate-400 text-xs"><i class="fa-solid fa-magnifying-glass"></i></button>
-              </form>
-            </div>
-
-            <!-- Portal Body -->
-            <div class="p-4 space-y-4">
-              <!-- Realtime Trends -->
-              <div class="bg-slate-800/60 p-3 rounded-2xl border border-slate-700/80">
-                <h4 class="text-xs font-bold text-emerald-400 mb-2 flex items-center gap-1.5">
-                  <i class="fa-solid fa-fire text-amber-500"></i> 실시간 급상승 키워드
-                </h4>
-                <div class="grid grid-cols-2 gap-2 text-xs">
-                  <div class="flex space-x-2"><span class="font-bold text-slate-400">1</span><span class="text-slate-200">iOS 18 포트폴리오</span></div>
-                  <div class="flex space-x-2"><span class="font-bold text-slate-400">2</span><span class="text-slate-200">GitHub Pages 호스팅</span></div>
-                  <div class="flex space-x-2"><span class="font-bold text-slate-400">3</span><span class="text-slate-200">프론트엔드 채용</span></div>
-                  <div class="flex space-x-2"><span class="font-bold text-slate-400">4</span><span class="text-slate-200">Tailwind CSS</span></div>
-                </div>
-              </div>
-
-              <!-- News Cards -->
-              <div class="space-y-2">
-                <h4 class="text-xs font-bold text-slate-300">실시간 주요 뉴스</h4>
-                <div class="p-3 bg-slate-800/40 rounded-xl border border-slate-800 space-y-1">
-                  <span class="text-[9px] font-bold text-blue-400 uppercase">IT / TECH</span>
-                  <h5 class="text-xs font-bold text-white">"웹 브라우저 속에 아이폰이?" 반응형 포트폴리오 화제</h5>
-                  <p class="text-[11px] text-slate-400">깃허브 블로그 및 개별 웹사이트 제작 사례 증가...</p>
-                </div>
-                <div class="p-3 bg-slate-800/40 rounded-xl border border-slate-800 space-y-1">
-                  <span class="text-[9px] font-bold text-emerald-400 uppercase">DEVELOPMENT</span>
-                  <h5 class="text-xs font-bold text-white">홍길동 개발자, 독창적인 포트폴리오 배포 완료</h5>
-                  <p class="text-[11px] text-slate-400">인스타그램과 디시인사이드 모의 앱까지 완벽 구현.</p>
-                </div>
-              </div>
-
-              <!-- Search Results Display Area -->
-              <div id="portal-results-box" class="hidden p-3 bg-emerald-950/40 border border-emerald-500/30 rounded-2xl text-xs space-y-2">
-                <h4 class="font-bold text-emerald-300 text-xs">검색 결과</h4>
-                <div id="portal-results-content" class="text-slate-300 space-y-1"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 4. Simulated TWITTER/X App -->
-        <div id="app-twitter" class="app-modal absolute inset-0 bg-black text-white z-40 pt-10 flex flex-col justify-between ios-scroll overflow-y-auto">
-          <div>
-            <div class="flex justify-between items-center px-4 py-2 border-b border-zinc-800 sticky top-0 bg-black/90 backdrop-blur z-20">
-              <i class="fa-brands fa-x-twitter text-lg"></i>
-              <button onclick="closeApp('app-twitter')" class="w-7 h-7 rounded-full bg-zinc-800 text-xs font-bold">✕</button>
-            </div>
-
-            <!-- Feed -->
-            <div class="divide-y divide-zinc-800">
-              <div class="p-4 flex space-x-3">
-                <div class="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center font-bold text-xs">G</div>
-                <div class="flex-1 text-xs space-y-1">
-                  <div class="flex space-x-1"><span class="font-bold">홍길동</span><span class="text-zinc-500">@gildong_dev · 2시간</span></div>
-                  <p class="text-zinc-200">GitHub Pages로 만든 나만의 iOS 18 아이폰 포트폴리오 완료했습니다! 🚀 #WebDev #Portfolio</p>
-                  <div class="flex justify-between text-zinc-500 pt-2 text-[11px] max-w-xs">
-                    <span><i class="fa-regular fa-comment"></i> 3</span>
-                    <span><i class="fa-solid fa-retweet"></i> 12</span>
-                    <span><i class="fa-regular fa-heart text-rose-500"></i> 45</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 5. GUESTBOOK App -->
-        <div id="app-guestbook" class="app-modal absolute inset-0 bg-slate-900 text-slate-100 z-40 pt-10 flex flex-col justify-between ios-scroll overflow-y-auto">
-          <div>
-            <div class="flex justify-between items-center px-4 py-2.5 bg-slate-950 border-b border-slate-800 sticky top-0 z-20">
-              <span class="font-bold text-sm tracking-tight">📝 방명록 (Guestbook)</span>
-              <button onclick="closeApp('app-guestbook')" class="w-7 h-7 rounded-full bg-slate-800 text-xs font-bold">✕</button>
-            </div>
-
-            <div class="p-4 space-y-4">
-              <form onsubmit="saveGuestbookMsg(event)" class="space-y-2 bg-slate-800/60 p-3 rounded-2xl border border-slate-700">
-                <input id="gb-author" type="text" placeholder="닉네임" required class="w-full px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-xl text-xs focus:outline-none focus:border-green-500">
-                <textarea id="gb-text" placeholder="방문 후 한마디를 입력해 보세요..." required class="w-full px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-xl text-xs focus:outline-none focus:border-green-500 h-16 resize-none"></textarea>
-                <button type="submit" class="w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl">남기기</button>
-              </form>
-
-              <div id="gb-messages-list" class="space-y-2 text-xs">
-                <!-- Dynamically Inserted -->
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 6. PROFILE App -->
-        <div id="app-profile" class="app-modal absolute inset-0 bg-slate-900 text-slate-100 z-40 pt-10 flex flex-col justify-between ios-scroll overflow-y-auto">
-          <div>
-            <div class="flex justify-between items-center px-4 py-2.5 bg-slate-950 border-b border-slate-800 sticky top-0 z-20">
-              <span class="font-bold text-sm">👤 프로필 정보</span>
-              <button onclick="closeApp('app-profile')" class="w-7 h-7 rounded-full bg-slate-800 text-xs font-bold">✕</button>
-            </div>
-
-            <div class="p-5 text-center space-y-4">
-              <div class="w-20 h-20 rounded-full bg-blue-600 mx-auto overflow-hidden p-1 shadow-lg">
-                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=300&auto=format&fit=crop" class="w-full h-full object-cover rounded-full">
-              </div>
-              <div>
-                <h3 class="font-bold text-lg">홍길동</h3>
-                <p class="text-xs text-blue-400 font-semibold">Web Frontend Developer</p>
-              </div>
-
-              <div class="text-left text-xs space-y-2 bg-slate-800/50 p-4 rounded-2xl border border-slate-800">
-                <p class="leading-relaxed text-slate-300">사용자 경험(UX)과 흥미로운 인터랙션을 탐구하는 개발자입니다.</p>
-                <hr class="border-slate-700 my-2">
-                <p><span class="font-bold text-slate-200">이메일:</span> gildong@example.com</p>
-                <p><span class="font-bold text-slate-200">GitHub:</span> github.com/Meong228</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Bottom Home Bar -->
-        <div class="absolute bottom-1.5 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-white/70 rounded-full z-50"></div>
-
-      </div>
     </div>
-  </main>
 
-  <!-- Interactive Logic Scripts -->
-  <script>
-    // 1. Clock & Date Updates
+    <!-- 앱 모달 창 -->
+    <div class="app-modal" id="appModal">
+        <div class="modal-header">
+            <span class="modal-title" id="modalTitle">앱</span>
+            <button class="close-btn" onclick="closeApp()">닫기</button>
+        </div>
+        <div class="modal-body" id="modalBody">내용</div>
+    </div>
+</div>
+
+<script>
     function updateClock() {
-      const now = new Date();
-      const hours = String(now.getHours()).padStart(2, '0');
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      document.getElementById('status-time').textContent = `${hours}:${minutes}`;
-      
-      const lockTime = document.getElementById('lock-time');
-      if (lockTime) lockTime.textContent = `${hours}:${minutes}`;
-
-      const options = { month: 'long', day: 'numeric', weekday: 'long' };
-      const lockDate = document.getElementById('lock-date');
-      if (lockDate) lockDate.textContent = now.toLocaleDateString('ko-KR', options);
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        document.getElementById('clock').innerText = `${hours}:${minutes}`;
+        
+        const options = { month: 'long', day: 'numeric', weekday: 'short' };
+        document.getElementById('date').innerText = now.toLocaleDateString('ko-KR', options);
     }
     setInterval(updateClock, 1000);
     updateClock();
 
-    // 2. Passcode Lock System (Passcode: 0000)
-    let enteredPasscode = "";
+    // 암호 0000
+    let currentPasscode = "";
     const CORRECT_PASSCODE = "0000";
 
-    function pressPasscodeKey(num) {
-      if (enteredPasscode.length < 4) {
-        enteredPasscode += num;
-        updatePasscodeDots();
-
-        if (enteredPasscode.length === 4) {
-          setTimeout(verifyPasscode, 150);
+    function pressKey(num) {
+        if (currentPasscode.length < 4) {
+            currentPasscode += num;
+            updateDots();
+            if (currentPasscode.length === 4) setTimeout(checkPasscode, 150);
         }
-      }
     }
-
-    function clearPasscodeKey() {
-      enteredPasscode = "";
-      updatePasscodeDots();
+    function updateDots() {
+        for (let i = 0; i < 4; i++) {
+            const dot = document.getElementById(`dot${i}`);
+            if (i < currentPasscode.length) dot.classList.add('filled');
+            else dot.classList.remove('filled', 'error');
+        }
     }
-
-    function updatePasscodeDots() {
-      const dots = document.querySelectorAll('#passcode-dots div');
-      dots.forEach((dot, idx) => {
-        if (idx < enteredPasscode.length) {
-          dot.classList.add('bg-white');
+    function checkPasscode() {
+        if (currentPasscode === CORRECT_PASSCODE) {
+            document.getElementById('lockScreen').classList.add('unlocked');
+            clearPasscode();
         } else {
-          dot.classList.remove('bg-white', 'bg-rose-500');
+            for (let i = 0; i < 4; i++) document.getElementById(`dot${i}`).classList.add('error');
+            document.getElementById('passcodeTitle').innerText = "비밀번호가 올바르지 않습니다";
+            setTimeout(() => {
+                clearPasscode();
+                document.getElementById('passcodeTitle').innerText = "비밀번호 입력 (0000)";
+            }, 600);
         }
-      });
     }
+    function clearPasscode() { currentPasscode = ""; updateDots(); }
+    function lock() { clearPasscode(); document.getElementById('lockScreen').classList.remove('unlocked'); }
 
-    function verifyPasscode() {
-      const box = document.getElementById('passcode-box');
-      const statusText = document.getElementById('passcode-status-text');
-
-      if (enteredPasscode === CORRECT_PASSCODE) {
-        document.getElementById('lock-screen').classList.add('unlocked');
-        clearPasscodeKey();
-        statusText.textContent = "암호를 입력하세요 (0000)";
-      } else {
-        box.classList.add('animate-shake');
-        statusText.textContent = "암호가 올바르지 않습니다";
-        document.querySelectorAll('#passcode-dots div').forEach(d => d.classList.add('bg-rose-500'));
-        
-        setTimeout(() => {
-          box.classList.remove('animate-shake');
-          clearPasscodeKey();
-          statusText.textContent = "암호를 입력하세요 (0000)";
-        }, 500);
-      }
-    }
-
-    function quickBypassUnlock() {
-      document.getElementById('lock-screen').classList.add('unlocked');
-    }
-
-    function lockPhone() {
-      clearPasscodeKey();
-      document.getElementById('lock-screen').classList.remove('unlocked');
-    }
-
-    // 3. Dynamic Island Toggle
-    let isDiExpanded = false;
-    function toggleDynamicIsland() {
-      const di = document.getElementById('dynamic-island');
-      const minified = document.getElementById('di-minified');
-      const camera = document.getElementById('di-camera');
-      const expanded = document.getElementById('di-expanded-content');
-
-      isDiExpanded = !isDiExpanded;
-      if (isDiExpanded) {
-        di.classList.add('expanded');
-        minified.classList.add('hidden');
-        camera.classList.add('hidden');
-        expanded.classList.remove('hidden');
-      } else {
-        di.classList.remove('expanded');
-        minified.classList.remove('hidden');
-        camera.classList.remove('hidden');
-        expanded.classList.add('hidden');
-      }
-    }
-
-    let isPlaying = true;
-    function toggleMusic(e) {
-      e.stopPropagation();
-      const btn = document.getElementById('music-play-btn');
-      isPlaying = !isPlaying;
-      btn.className = isPlaying ? 'fa-solid fa-pause text-emerald-400 cursor-pointer' : 'fa-solid fa-play text-slate-300 cursor-pointer';
-    }
-
-    // 4. Modal App Controller
-    function openApp(id) {
-      const modal = document.getElementById(id);
-      if (modal) modal.classList.add('active');
-    }
-
-    function closeApp(id) {
-      const modal = document.getElementById(id);
-      if (modal) modal.classList.remove('active');
-    }
-
-    // 5. Simulated INSTAGRAM Logic
-    const instaCaptions = {
-      1: "새로운 개발 포트폴리오 작업 중! 💻✨ #개발자 #iOS #포트폴리오",
-      2: "코딩하면서 듣는 로파이 비트 🎧 #LoFi #Coding",
-      3: "사이버펑크 스타일 UI 실험 🚀",
-      4: "GitHub Pages 배포 성공적!",
-      5: "오늘의 작업 공간 ☕",
-      6: "인터랙티브 웹 디자인 프로젝트"
+    // 앱 데이터
+    const appData = {
+        profile: {
+            title: "👤 프로필",
+            content: `
+                <div class="profile-card">
+                    <div class="profile-avatar">✨</div>
+                    <h3>나의 포트폴리오</h3>
+                    <p style="color:#a1a1aa; font-size:13px;">아이폰 UI 공간입니다.</p>
+                </div>
+                <p style="color:#a1a1aa;">원하는 링크와 소개글을 자유롭게 배치할 수 있습니다!</p>
+            `
+        },
+        messages: {
+            title: "💬 메시지 (문자)",
+            content: `
+                <div class="chat-list" id="chatList">
+                    <div class="chat-bubble other">안녕! 아이폰 포트폴리오 사이트에 온 걸 환영해! 📱</div>
+                    <div class="chat-bubble me">고마워! 문자를 직접 입력해서 대화할 수도 있네?</div>
+                </div>
+                <div class="chat-input-box">
+                    <input type="text" id="chatMsg" class="chat-input" placeholder="문자 메시지 입력...">
+                    <button class="chat-send" onclick="sendMessage()">전송</button>
+                </div>
+            `
+        },
+        phone: {
+            title: "📞 전화",
+            content: `
+                <div style="text-align:center; padding: 20px 0;">
+                    <h2 style="font-size:32px; margin-bottom:20px;">010-0000-0000</h2>
+                    <button style="width:70px; height:70px; border-radius:50%; background:#22c55e; border:none; color:#fff; font-size:28px; cursor:pointer;" onclick="alert('전화 연결 중...')">📞</button>
+                </div>
+            `
+        },
+        instagram: {
+            title: "📸 Instagram",
+            content: `<h3>Instagram Feed</h3><br><a href="https://instagram.com" target="_blank" class="link-btn">인스타그램 바로가기</a>`
+        },
+        twitter: {
+            title: "🐦 X (Twitter)",
+            content: `<h3>X Timeline</h3><br><a href="https://twitter.com" target="_blank" class="link-btn">트위터 바로가기</a>`
+        },
+        dcinside: {
+            title: "💬 디시인사이드",
+            content: `<h3>DCInside Gallery</h3><br><a href="https://www.dcinside.com" target="_blank" class="link-btn">디시인사이드 방문하기</a>`
+        },
+        memo: {
+            title: "📒 메모장",
+            content: `<h3>아이폰 메모</h3><br><p style="color:#a1a1aa;">오늘의 생각이나 기록하고 싶은 메모를 적어보세요.</p>`
+        },
+        safari: {
+            title: "🧭 Safari",
+            content: `<h3>Safari Browser</h3><br><a href="https://google.com" target="_blank" class="link-btn">Google 검색하기</a>`
+        },
+        music: {
+            title: "🎵 음악",
+            content: `<h3>🎧 Now Playing</h3><br><p style="color:#a1a1aa;">Lofi Beats - Playing Live</p>`
+        },
+        guestbook: {
+            title: "📝 방명록",
+            content: `
+                <input type="text" id="gbName" class="gb-input" placeholder="이름">
+                <textarea id="gbMsg" class="gb-input" placeholder="메시지를 남겨주세요!" rows="3"></textarea>
+                <button class="gb-btn" onclick="saveGuestbook()">등록하기</button>
+                <div id="gbList" style="margin-top:15px;"></div>
+            `
+        }
     };
 
-    function openInstaDetail(id) {
-      const detailView = document.getElementById('insta-detail-view');
-      const img = document.getElementById('insta-detail-img');
-      const caption = document.getElementById('insta-detail-caption');
-      
-      const gridImgs = document.querySelectorAll('#insta-grid img');
-      if(gridImgs[id-1]) {
-        img.src = gridImgs[id-1].src;
-        caption.textContent = instaCaptions[id] || "포트폴리오 이미지 상세 보기";
-        detailView.classList.remove('hidden');
-      }
+    function openApp(appName) {
+        const modal = document.getElementById('appModal');
+        const data = appData[appName];
+        document.getElementById('modalTitle').innerText = data.title;
+        document.getElementById('modalBody').innerHTML = data.content;
+        modal.classList.add('active');
+        if(appName === 'guestbook') loadGuestbook();
+    }
+    function closeApp() { document.getElementById('appModal').classList.remove('active'); }
+
+    // 문자(메시지) 보내기 기능
+    function sendMessage() {
+        const input = document.getElementById('chatMsg');
+        const msg = input.value.trim();
+        if(!msg) return;
+
+        const chatList = document.getElementById('chatList');
+        const newBubble = document.createElement('div');
+        newBubble.className = 'chat-bubble me';
+        newBubble.innerText = msg;
+        chatList.appendChild(newBubble);
+
+        input.value = '';
+        chatList.scrollTop = chatList.scrollHeight;
     }
 
-    function closeInstaDetail() {
-      document.getElementById('insta-detail-view').classList.add('hidden');
+    // 방명록
+    function saveGuestbook() {
+        const name = document.getElementById('gbName').value.trim();
+        const msg = document.getElementById('gbMsg').value.trim();
+        if(!name || !msg) return alert('내용을 입력해주세요!');
+
+        const list = JSON.parse(localStorage.getItem('iphone_gb') || '[]');
+        list.unshift({ name, msg, date: new Date().toLocaleDateString() });
+        localStorage.setItem('iphone_gb', JSON.stringify(list));
+
+        document.getElementById('gbName').value = '';
+        document.getElementById('gbMsg').value = '';
+        loadGuestbook();
     }
-
-    // 6. Simulated DCINSIDE Gallery Logic
-    let dcPosts = [
-      { id: 1, title: "iOS 18 포트폴리오 만드는데 비번 0000이다 ㅋㅋㅋ", author: "ㅇㅇ(211.36)", date: "12:01", content: "잠금해제 애니메이션 지리네 진짜 ㅋㅋㅋ", recom: 15 },
-      { id: 2, title: "인스타그램 모의 피드 기능도 신기하네", author: "개발뉴비", date: "11:45", content: "사진 누르면 상세 모달창 뜨는거 구현 잘해놨다.", recom: 8 }
-    ];
-
-    function renderDcPosts() {
-      const container = document.getElementById('dc-posts-list');
-      container.innerHTML = dcPosts.map(p => `
-        <div onclick="openDcDetail(${p.id})" class="p-3 hover:bg-slate-800/50 cursor-pointer">
-          <div class="font-semibold text-slate-100">${escapeHtml(p.title)}</div>
-          <div class="flex justify-between text-[10px] text-slate-400 mt-1">
-            <span>${escapeHtml(p.author)} | ${p.date}</span>
-            <span class="text-blue-400">추천 ${p.recom}</span>
-          </div>
-        </div>
-      `).join('');
+    function loadGuestbook() {
+        const list = JSON.parse(localStorage.getItem('iphone_gb') || '[]');
+        const container = document.getElementById('gbList');
+        if(!container) return;
+        container.innerHTML = list.map(item => `
+            <div style="background:#18181b; padding:10px; border-radius:10px; margin-bottom:8px; border:1px solid #27272a;">
+                <b>${item.name}</b> <small style="color:#71717a;">(${item.date})</small>
+                <p style="margin-top:4px;">${item.msg}</p>
+            </div>
+        `).join('');
     }
+</script>
 
-    function toggleDcWriteForm() {
-      document.getElementById('dc-write-form').classList.toggle('hidden');
-    }
-
-    function submitDcPost() {
-      const titleInput = document.getElementById('dc-input-title');
-      const contentInput = document.getElementById('dc-input-content');
-
-      if (!titleInput.value.trim()) return alert("제목을 입력하세요!");
-
-      const newPost = {
-        id: Date.now(),
-        title: titleInput.value.trim(),
-        author: "익명(118.235)",
-        date: "방금 전",
-        content: contentInput.value.trim() || "내용 없음",
-        recom: 0
-      };
-
-      dcPosts.unshift(newPost);
-      titleInput.value = "";
-      contentInput.value = "";
-      toggleDcWriteForm();
-      renderDcPosts();
-    }
-
-    let activeDcPostId = null;
-    function openDcDetail(id) {
-      const post = dcPosts.find(p => p.id === id);
-      if (!post) return;
-      activeDcPostId = id;
-
-      document.getElementById('dc-view-title').textContent = post.title;
-      document.getElementById('dc-view-author').textContent = `작성자: ${post.author}`;
-      document.getElementById('dc-view-date').textContent = post.date;
-      document.getElementById('dc-view-content').textContent = post.content;
-      document.getElementById('dc-view-recom').textContent = post.recom;
-
-      document.getElementById('dc-detail-view').classList.remove('hidden');
-    }
-
-    function closeDcDetail() {
-      document.getElementById('dc-detail-view').classList.add('hidden');
-    }
-
-    function recommendDcPost() {
-      if (!activeDcPostId) return;
-      const post = dcPosts.find(p => p.id === activeDcPostId);
-      if (post) {
-        post.recom += 1;
-        document.getElementById('dc-view-recom').textContent = post.recom;
-        renderDcPosts();
-      }
-    }
-
-    // 7. Simulated PORTAL Search Logic
-    function handlePortalSearch(e) {
-      e.preventDefault();
-      const input = document.getElementById('portal-search-input');
-      const resultsBox = document.getElementById('portal-results-box');
-      const resultsContent = document.getElementById('portal-results-content');
-      
-      const query = input.value.trim();
-      if (!query) return;
-
-      resultsBox.classList.remove('hidden');
-      resultsContent.innerHTML = `
-        <p class="font-bold text-white">'${escapeHtml(query)}' 검색 결과:</p>
-        <p>홍길동의 iOS 포트폴리오 웹 사이트 내에서 연관 항목을 찾아 연결했습니다.</p>
-      `;
-    }
-
-    // 8. Persistent LocalStorage GUESTBOOK Logic
-    function loadGuestbookMsgs() {
-      const container = document.getElementById('gb-messages-list');
-      const list = JSON.parse(localStorage.getItem('ios18_gb') || '[]');
-
-      if (list.length === 0) {
-        container.innerHTML = `<div class="p-3 bg-slate-800/40 rounded-xl text-center text-slate-500 text-xs">첫 방명록을 작성해 보세요!</div>`;
-        return;
-      }
-
-      container.innerHTML = list.map(item => `
-        <div class="p-3 bg-slate-800/50 rounded-xl border border-slate-700/60">
-          <div class="flex justify-between items-center mb-1">
-            <span class="font-bold text-emerald-400 text-xs">${escapeHtml(item.author)}</span>
-            <span class="text-[9px] text-slate-400">${item.date}</span>
-          </div>
-          <p class="text-slate-200 leading-relaxed">${escapeHtml(item.text)}</p>
-        </div>
-      `).join('');
-    }
-
-    function saveGuestbookMsg(e) {
-      e.preventDefault();
-      const authorInput = document.getElementById('gb-author');
-      const textInput = document.getElementById('gb-text');
-
-      const newMsg = {
-        author: authorInput.value.trim(),
-        text: textInput.value.trim(),
-        date: new Date().toLocaleDateString('ko-KR', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })
-      };
-
-      const list = JSON.parse(localStorage.getItem('ios18_gb') || '[]');
-      list.unshift(newMsg);
-      localStorage.setItem('ios18_gb', JSON.stringify(list));
-
-      authorInput.value = '';
-      textInput.value = '';
-      loadGuestbookMsgs();
-    }
-
-    function escapeHtml(str) {
-      return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    }
-
-    // Initializer
-    window.onload = function() {
-      renderDcPosts();
-      loadGuestbookMsgs();
-    };
-  </script>
 </body>
 </html>
-```
-
-### 💡 주요 기능 요약
-
-1. **아이폰 비밀번호 시스템 (`0000`)**
-   - 숫자 키패드로 `0000`을 누르면 부드럽게 해제되며, 잘못된 번호 입력 시 아이폰 특유의 흔들림(Shake) 효과와 오류 메세지가 표시됩니다.
-2. **가상 인스타그램 (Instagram)**
-   - 게시물 피드 6개가 격자로 표시되며, 각 사진을 클릭하면 포토 모달 팝업이 열려 캡션과 댓글을 볼 수 있습니다.
-3. **가상 디시인사이드 (DCInside)**
-   - 게시글 목록, 개념글 추천(👍) 기능 및 본문 상세 페이지 구현.
-   - **글쓰기(✍️)** 버튼을 눌러 본인이 직접 새 글을 올리면 목록에 바로 추가됩니다.
-4. **가상 인터넷 포털 (Portal Search)**
-   - 검색창 검색 시 실시간 결과 출력, 실시간 인기 검색어 순위 및 주요 IT 뉴스 카드 지원.
-5. **방명록 (Guestbook)**
-   - 방문자가 메시지를 남기면 브라우저(LocalStorage)에 영구 저장되어 유지됩니다.
-
-GitHub의 `index.html` 파일에 이 코드를 붙여넣으시면 동일한 주소에서 즉시 구동됩니다!
-```
