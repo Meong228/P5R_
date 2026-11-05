@@ -1,420 +1,592 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My iPhone Portfolio</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; user-select: none; }
-        body { background: #0b0f19; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; color: #fff; }
-        
-        .iphone { width: 375px; height: 780px; background: #000; border-radius: 52px; border: 12px solid #27272a; position: relative; box-shadow: 0 25px 60px rgba(0,0,0,0.6); overflow: hidden; display: flex; flex-direction: column; }
-        .notch { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 115px; height: 32px; background: #000; border-radius: 20px; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; }
-        .camera { width: 12px; height: 12px; background: #18181b; border-radius: 50%; }
-        
-        .screen { flex: 1; background: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop') center/cover; position: relative; display: flex; flex-direction: column; justify-content: space-between; padding: 55px 20px 20px; }
-        
-        /* Lockscreen */
-        .lock-screen { position: absolute; inset: 0; background: rgba(10, 10, 15, 0.45); backdrop-filter: blur(16px); z-index: 50; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 60px 20px 40px; transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
-        .lock-screen.unlocked { transform: translateY(-100%); }
-        .clock { font-size: 68px; font-weight: 700; text-shadow: 0 4px 20px rgba(0,0,0,0.4); letter-spacing: -2px; }
-        .date { font-size: 16px; font-weight: 500; opacity: 0.9; margin-top: -10px; text-shadow: 0 2px 10px rgba(0,0,0,0.4); text-align: center; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>iPhone Home Screen Mockup</title>
+  <style>
+    * { box-sizing: border-box; }
 
-        .passcode-container { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-bottom: 20px; width: 100%; }
-        .passcode-title { font-size: 14px; opacity: 0.8; font-weight: 500; }
-        .passcode-dots { display: flex; gap: 12px; margin-bottom: 10px; }
-        .dot { width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid #fff; transition: background 0.2s; }
-        .dot.filled { background: #fff; }
-        .dot.error { border-color: #ef4444; background: #ef4444; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #e9eefc;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
 
-        .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px 22px; }
-        .key-btn { width: 60px; height: 60px; border-radius: 50%; background: rgba(255,255,255,0.15); border: none; color: #fff; font-size: 24px; font-weight: 500; cursor: pointer; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
-        .key-btn:active { background: rgba(255,255,255,0.4); }
+    .frame {
+      width: 430px;
+      height: 920px;
+      background: #0f0f12;
+      border-radius: 36px;
+      padding: 12px;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+      position: relative;
+    }
 
-        /* Homescreen Apps & Dock */
-        .app-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px 14px; margin-top: 10px; }
-        .dock { background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(20px); border-radius: 30px; padding: 12px 14px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 10px; }
-        .app-item { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; }
-        .app-icon { width: 60px; height: 60px; border-radius: 15px; display: flex; justify-content: center; align-items: center; font-size: 26px; box-shadow: 0 8px 20px rgba(0,0,0,0.3); transition: transform 0.15s; }
-        .app-icon:active { transform: scale(0.88); }
-        .app-name { font-size: 11px; font-weight: 500; text-shadow: 0 1px 4px rgba(0,0,0,0.8); }
-        
-        .bg-profile { background: linear-gradient(135deg, #38bdf8, #0284c7); }
-        .bg-twitter { background: linear-gradient(135deg, #38bdf8, #0f172a); }
-        .bg-insta { background: linear-gradient(135deg, #f58529, #dd2a7b, #8134af); }
-        .bg-dc { background: linear-gradient(135deg, #2563eb, #1e3a8a); }
-        .bg-guest { background: linear-gradient(135deg, #34d399, #059669); }
-        .bg-memo { background: linear-gradient(135deg, #f59e0b, #d97706); }
-        .bg-msg { background: linear-gradient(135deg, #22c55e, #15803d); }
-        .bg-phone { background: linear-gradient(135deg, #10b981, #047857); }
-        .bg-safari { background: linear-gradient(135deg, #0ea5e9, #0284c7); }
-        .bg-music { background: linear-gradient(135deg, #ec4899, #be185d); }
-        .bg-lock { background: linear-gradient(135deg, #64748b, #334155); }
+    .phone {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, #0a1b5d 0%, #0b2b75 25%, #102f79 100%);
+      border-radius: 28px;
+      overflow: hidden;
+      position: relative;
+      color: white;
+    }
 
-        /* Modal App Sheet */
-        .app-modal { position: absolute; inset: 0; background: #121214; color: #f4f4f5; z-index: 80; border-radius: 44px 44px 0 0; transform: translateY(100%); transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1); display: flex; flex-direction: column; box-shadow: 0 -10px 40px rgba(0,0,0,0.5); }
-        .app-modal.active { transform: translateY(0); }
-        .modal-header { padding: 35px 20px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #27272a; }
-        .modal-title { font-size: 17px; font-weight: 600; }
-        .close-btn { background: #27272a; color: #a1a1aa; border: none; padding: 6px 14px; border-radius: 20px; font-weight: 600; cursor: pointer; font-size: 13px; }
-        .modal-body { padding: 0; overflow-y: auto; flex: 1; font-size: 14px; line-height: 1.6; }
+    .topbar {
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 18px 0 18px;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.4px;
+    }
 
-        /* Posts Table DB UI */
-        .post-item { padding: 14px 16px; border-bottom: 1px solid #27272a; display: flex; gap: 12px; }
-        .post-avatar { width: 40px; height: 40px; border-radius: 50%; background: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; overflow: hidden; }
-        .post-avatar img { width: 100%; height: 100%; object-fit: cover; }
-        .post-content { flex: 1; }
-        .post-header { display: flex; gap: 6px; align-items: center; margin-bottom: 4px; }
-        .post-displayname { font-weight: 700; color: #fff; }
-        .post-username { color: #71717a; font-size: 13px; }
-        .post-text { color: #e4e4e7; font-size: 14px; margin-bottom: 8px; white-space: pre-line; word-break: break-word; }
-        .post-actions { display: flex; gap: 20px; color: #71717a; font-size: 13px; margin-top: 10px; }
-        .action-btn { cursor: pointer; transition: color 0.2s; display: flex; align-items: center; gap: 4px; }
-        .action-btn.liked { color: #ef4444; }
+    .status-left { display: flex; align-items: center; gap: 10px; }
+    .status-right { display: flex; align-items: center; gap: 12px; }
 
-        .write-box { padding: 16px; border-bottom: 1px solid #27272a; background: #18181b; }
-        .write-textarea { width: 100%; padding: 10px; background: #09090b; border: 1px solid #27272a; color: #fff; border-radius: 10px; margin-bottom: 8px; font-size: 14px; outline: none; resize: none; }
-        .write-footer { display: flex; justify-content: space-between; align-items: center; }
-        .char-counter { font-size: 12px; color: #71717a; }
-        .write-btn { padding: 8px 18px; background: #1d9bf0; color: #fff; border: none; border-radius: 20px; font-weight: 700; cursor: pointer; }
+    .signal {
+      display: flex;
+      align-items: end;
+      gap: 2px;
+      height: 14px;
+    }
+    .signal span {
+      width: 4px;
+      border-radius: 2px;
+      background: white;
+      display: block;
+    }
+    .signal span:nth-child(1) { height: 4px; }
+    .signal span:nth-child(2) { height: 6px; }
+    .signal span:nth-child(3) { height: 8px; }
+    .signal span:nth-child(4) { height: 10px; }
 
-        /* Comments UI */
-        .comments-section { margin-top: 10px; background: #18181b; padding: 10px; border-radius: 8px; }
-        .comment-item { font-size: 12px; padding: 4px 0; border-bottom: 1px solid #27272a; color: #d4d4d8; }
-        .comment-input-box { display: flex; gap: 6px; margin-top: 6px; }
-        .comment-input { flex: 1; background: #09090b; border: 1px solid #27272a; color: #fff; padding: 4px 8px; border-radius: 6px; font-size: 12px; }
+    .battery {
+      width: 25px;
+      height: 12px;
+      border: 2px solid white;
+      border-radius: 3px;
+      position: relative;
+      display: inline-block;
+    }
+    .battery::before {
+      content: "";
+      position: absolute;
+      inset: 2px;
+      border-radius: 2px;
+      background: white;
+    }
+    .battery::after {
+      content: "";
+      position: absolute;
+      right: -5px;
+      top: 2px;
+      width: 3px;
+      height: 6px;
+      background: white;
+      border-radius: 2px;
+    }
 
-        .profile-card { text-align: center; padding: 24px 16px; }
-        .profile-avatar-lg { width: 80px; height: 80px; border-radius: 50%; background: #3b82f6; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 36px; }
-    </style>
+    .browser-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 18px 10px 18px;
+      font-size: 12px;
+      color: white;
+    }
+
+    .browser-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .close-btn {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.18);
+      display: grid;
+      place-items: center;
+      font-size: 20px;
+      line-height: 1;
+      font-weight: 300;
+    }
+
+    .browser-url {
+      margin: 0 14px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 10px 12px;
+      font-size: 13px;
+      flex: 1;
+      text-align: center;
+      color: #dfe7ff;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .menu-dots {
+      width: 18px;
+      height: 18px;
+      position: relative;
+    }
+    .menu-dots::before, .menu-dots::after, .menu-dots span {
+      content: "";
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.9);
+      left: 6px;
+    }
+    .menu-dots::before { top: 0; }
+    .menu-dots span { top: 6px; }
+    .menu-dots::after { top: 12px; }
+
+    .content {
+      padding: 8px 18px 0 18px;
+      position: relative;
+      height: calc(100% - 100px);
+    }
+
+    .notification-bar {
+      height: 54px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 20px;
+      margin: 0 auto 18px auto;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.9);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .top-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .tile {
+      height: 180px;
+      border-radius: 28px;
+      padding: 18px 18px 10px 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tile.weather {
+      background: rgba(255,255,255,0.26);
+      backdrop-filter: blur(4px);
+    }
+
+    .tile.dark {
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(5px);
+    }
+
+    .tile-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 12px;
+    }
+
+    .temp {
+      font-size: 28px;
+      font-weight: 700;
+      margin-top: 8px;
+      color: #fff;
+    }
+
+    .weather-box {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      height: 100%;
+    }
+
+    .weather-small {
+      font-size: 18px;
+      font-weight: 700;
+      margin-top: 10px;
+    }
+
+    .moon {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.8);
+      position: relative;
+      box-shadow: inset -14px 0 0 rgba(255,255,255,0.2);
+    }
+
+    .home-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px 12px;
+      margin-top: 12px;
+    }
+
+    .app-icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: white;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 500;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+
+    .icon-box {
+      width: 62px;
+      height: 62px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      position: relative;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+      overflow: hidden;
+    }
+
+    .icon-box.photo {
+      background: linear-gradient(135deg, #ffd3da, #ff9cb6);
+    }
+    .icon-box.calendar {
+      background: linear-gradient(135deg, #d9e4ff, #9cb7ff);
+    }
+    .icon-box.memo {
+      background: linear-gradient(135deg, #e9e7de, #d3d3d1);
+    }
+    .icon-box.clock {
+      background: linear-gradient(135deg, #f0f0f0, #d7d7d7);
+    }
+    .icon-box.weather-icon {
+      background: linear-gradient(135deg, #cfe9ff, #90c6ff);
+    }
+    .icon-box.settings {
+      background: linear-gradient(135deg, #d9d9d9, #a4a4a4);
+    }
+    .icon-box.phone-app {
+      background: linear-gradient(135deg, #6ed4a1, #3bb57a);
+    }
+    .icon-box.message {
+      background: linear-gradient(135deg, #f1f6ff, #d9ebff);
+    }
+
+    .camera-icon {
+      width: 28px; height: 22px; border-radius: 7px;
+      background: white; position: relative;
+      box-shadow: inset 0 0 0 2px rgba(0,0,0,0.08);
+    }
+    .camera-icon::before {
+      content: "";
+      position: absolute;
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      width: 12px; height: 12px; border-radius: 50%;
+      background: linear-gradient(135deg, #9dd1ff, #6aa6ff);
+      border: 2px solid rgba(255,255,255,0.9);
+    }
+    .camera-icon::after {
+      content: "";
+      position: absolute;
+      width: 18px; height: 12px;
+      top: 3px; left: 5px;
+      border-radius: 6px;
+      border: 2px solid rgba(0,0,0,0.15);
+      opacity: 0.3;
+    }
+
+    .calendar-icon {
+      width: 28px; height: 28px; border-radius: 7px;
+      background: white; position: relative;
+    }
+    .calendar-icon::before {
+      content: "";
+      position: absolute; inset: 6px;
+      border-radius: 5px;
+      background: linear-gradient(180deg, #8cb8ff, #5f98ff);
+    }
+    .calendar-icon::after {
+      content: "";
+      position: absolute;
+      left: 5px; right: 5px; top: 10px; height: 2px; background: rgba(255,255,255,0.8);
+      box-shadow: 0 6px 0 rgba(255,255,255,0.8);
+    }
+
+    .memo-icon {
+      width: 26px; height: 30px; border-radius: 6px; background: white; position: relative;
+    }
+    .memo-icon::before {
+      content: "";
+      position: absolute; left: 6px; right: 6px; top: 9px; height: 2px; background: #d0d0d0;
+      box-shadow: 0 6px 0 #d0d0d0, 0 12px 0 #d0d0d0;
+    }
+
+    .clock-icon {
+      width: 28px; height: 28px; border-radius: 50%; background: white; position: relative;
+    }
+    .clock-icon::before {
+      content: "";
+      position: absolute; left: 13px; top: 13px; width: 2px; height: 8px; background: #888;
+      transform-origin: bottom center;
+      transform: rotate(40deg);
+      border-radius: 2px;
+    }
+    .clock-icon::after {
+      content: "";
+      position: absolute; left: 13px; top: 13px; width: 2px; height: 10px; background: #888;
+      transform-origin: bottom center;
+      transform: rotate(150deg);
+      border-radius: 2px;
+    }
+
+    .cloud-icon {
+      width: 32px; height: 18px; background: white; border-radius: 16px; position: relative;
+      box-shadow: 10px -6px 0 2px rgba(255,255,255,0.7);
+    }
+    .cloud-icon::before {
+      content: "";
+      position: absolute; width: 14px; height: 14px; background: white;
+      border-radius: 50%; left: 6px; top: -6px;
+    }
+
+    .settings-icon {
+      width: 30px; height: 30px; border-radius: 50%; background: #f3f3f3; position: relative;
+      box-shadow: inset 0 0 0 2px rgba(0,0,0,0.06);
+    }
+    .settings-icon::before {
+      content: "";
+      position: absolute; inset: 8px; border-radius: 50%;
+      background: linear-gradient(180deg, #888, #555);
+      box-shadow: 0 0 0 4px rgba(255,255,255,0.6);
+    }
+
+    .phone-icon {
+      width: 24px; height: 24px; border: 3px solid white; border-radius: 50%;
+      position: relative;
+    }
+    .phone-icon::before {
+      content: "";
+      position: absolute;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: white;
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .message-icon {
+      width: 30px; height: 24px; border-radius: 8px; background: white; position: relative;
+    }
+    .message-icon::before {
+      content: "";
+      position: absolute; left: 6px; right: 6px; top: 7px; height: 2px; background: #9eaec7;
+      box-shadow: 0 6px 0 #9eaec7;
+    }
+    .message-icon::after {
+      content: "";
+      position: absolute; left: 8px; bottom: -4px; width: 12px; height: 12px; background: white; transform: rotate(45deg);
+      border-radius: 2px;
+    }
+
+    .social-icon {
+      width: 32px; height: 32px; border-radius: 9px; position: relative;
+      background: linear-gradient(135deg, #ffdc62, #d96bff);
+    }
+    .social-icon::before {
+      content: "";
+      position: absolute;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.18);
+      left: 7px; top: 7px;
+      box-shadow: 0 0 0 2px rgba(255,255,255,0.32);
+    }
+    .social-icon::after {
+      content: "";
+      position: absolute;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #fff;
+      right: 7px; top: 7px;
+    }
+
+    .instagram-icon {
+      width: 30px; height: 30px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #f7d154, #d64fb8, #5057d1);
+      position: relative;
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,0.18);
+    }
+    .instagram-icon::before {
+      content: "";
+      position: absolute;
+      width: 16px; height: 16px;
+      border-radius: 5px;
+      border: 2px solid white;
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .instagram-icon::after {
+      content: "";
+      position: absolute;
+      width: 6px; height: 6px; border-radius: 50%; background: white;
+      left: 50%; top: 50%; transform: translate(-50%, -50%);
+      box-shadow: 12px -11px 0 -2px white;
+    }
+
+    .safari-icon {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: linear-gradient(135deg, #56d0ff, #3c7bff);
+      position: relative;
+    }
+    .safari-icon::before {
+      content: "";
+      position: absolute; inset: 6px;
+      border-radius: 50%;
+      border: 3px solid rgba(255,255,255,0.85);
+    }
+    .safari-icon::after {
+      content: "";
+      position: absolute;
+      width: 12px; height: 12px;
+      background: linear-gradient(135deg, #ffffff, #e4f4ff);
+      border-radius: 50%;
+      right: 4px; top: 4px;
+      box-shadow: 0 0 0 4px rgba(255,255,255,0.15);
+    }
+
+    .label {
+      font-size: 14px;
+      color: rgba(255,255,255,0.9);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .dock {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      bottom: 18px;
+      height: 86px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      backdrop-filter: blur(10px);
+    }
+
+    .dock .app {
+      width: 52px; height: 52px;
+      border-radius: 16px;
+      position: relative;
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,0.13);
+    }
+
+    .dock .app.red { background: linear-gradient(135deg, #ffb4b4, #ff7f7f); }
+    .dock .app.green { background: linear-gradient(135deg, #a5f0b0, #5ccf7d); }
+    .dock .app.blue { background: linear-gradient(135deg, #b9ddff, #6ca6ff); }
+    .dock .app.orange { background: linear-gradient(135deg, #ffd3a6, #f09152); }
+
+    .badge {
+      position: absolute;
+      top: -4px;
+      right: -6px;
+      width: 20px;
+      height: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 50%;
+      background: red;
+      color: white;
+      display: grid;
+      place-items: center;
+      border: 2px solid rgba(255,255,255,0.8);
+    }
+
+    .searchbar {
+      margin: 14px auto 20px auto;
+      width: 100%;
+      height: 50px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.75);
+      font-size: 20px;
+      letter-spacing: 0.4px;
+    }
+    .searchbar .lens {
+      width: 18px; height: 18px; border: 3px solid rgba(255,255,255,0.8); border-radius: 50%; position: relative; margin-right: 10px;
+    }
+    .searchbar .lens::after {
+      content: "";
+      position: absolute;
+      width: 8px; height: 3px; background: rgba(255,255,255,0.8);
+      right: -7px; bottom: -4px; transform: rotate(45deg);
+      border-radius: 2px;
+    }
+
+    @media (max-width: 480px) {
+      .frame {
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0;
+      }
+    }
+  </style>
 </head>
 <body>
+  <div class="frame">
+    <div class="phone">
+      <div class="topbar">
+        <div class="status-left">2:18</div>
+        <div class="status-right">
+          <div class="signal">
+            <span></span><span></span><span></span><span></span>
+          </div>
+          <div class="battery"></div>
+        </div>
+      </div>
 
-<div class="iphone">
-    <div class="notch"><div class="camera"></div><div style="font-size:10px; opacity:0.8;">9:41</div></div>
+      <div class="browser-bar">
+        <div class="browser-left">
+          <div class="close-btn">×</div>
+          <div class="browser-url">ham930116.github.io</div>
+        </div>
+        <div class="menu-dots"><span></span></div>
+      </div>
 
-    <div class="screen">
-        <!-- 잠금 화면 -->
-        <div class="lock-screen" id="lockScreen">
-            <div>
-                <div class="clock" id="clock">09:41</div>
-                <div class="date" id="date">11월 6일 금요일</div>
-            </div>
-
-            <div class="passcode-container">
-                <div class="passcode-title" id="passcodeTitle">비밀번호 입력 (0000)</div>
-                <div class="passcode-dots">
-                    <div class="dot" id="dot0"></div>
-                    <div class="dot" id="dot1"></div>
-                    <div class="dot" id="dot2"></div>
-                    <div class="dot" id="dot3"></div>
-                </div>
-
-                <div class="keypad">
-                    <button class="key-btn" onclick="pressKey('1')">1</button>
-                    <button class="key-btn" onclick="pressKey('2')">2</button>
-                    <button class="key-btn" onclick="pressKey('3')">3</button>
-                    <button class="key-btn" onclick="pressKey('4')">4</button>
-                    <button class="key-btn" onclick="pressKey('5')">5</button>
-                    <button class="key-btn" onclick="pressKey('6')">6</button>
-                    <button class="key-btn" onclick="pressKey('7')">7</button>
-                    <button class="key-btn" onclick="pressKey('8')">8</button>
-                    <button class="key-btn" onclick="pressKey('9')">9</button>
-                    <div></div>
-                    <button class="key-btn" onclick="pressKey('0')">0</button>
-                    <button class="key-btn" style="font-size:13px;" onclick="clearPasscode()">취소</button>
-                </div>
-            </div>
+      <div class="content">
+        <div class="notification-bar">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="font-size:23px;">☀️</div>
+            <div>화요일</div>
+          </div>
         </div>
 
-        <!-- 홈 화면 앱 목록 -->
-        <div class="app-grid">
-            <div class="app-item" onclick="openApp('profile')">
-                <div class="app-icon bg-profile">👤</div>
-                <div class="app-name">프로필</div>
-            </div>
-            <div class="app-item" onclick="openApp('posts')">
-                <div class="app-icon bg-twitter">🐦</div>
-                <div class="app-name">포스트 (X)</div>
-            </div>
-            <div class="app-item" onclick="openApp('instagram')">
-                <div class="app-icon bg-insta">📸</div>
-                <div class="app-name">Instagram</div>
-            </div>
-            <div class="app-item" onclick="openApp('dcinside')">
-                <div class="app-icon bg-dc">💬</div>
-                <div class="app-name">디시인사이드</div>
-            </div>
-            <div class="app-item" onclick="openApp('guestbook')">
-                <div class="app-icon bg-guest">📝</div>
-                <div class="app-name">방명록</div>
-            </div>
-            <div class="app-item" onclick="openApp('memo')">
-                <div class="app-icon bg-memo">📒</div>
-                <div class="app-name">메모장</div>
-            </div>
-            <div class="app-item" onclick="lock()">
-                <div class="app-icon bg-lock">🔒</div>
-                <div class="app-name">화면 잠금</div>
-            </div>
-        </div>
-
-        <!-- 하단 Dock 바 -->
-        <div class="dock">
-            <div class="app-item" onclick="openApp('phone')">
-                <div class="app-icon bg-phone">📞</div>
-            </div>
-            <div class="app-item" onclick="openApp('messages')">
-                <div class="app-icon bg-msg">💬</div>
-            </div>
-            <div class="app-item" onclick="openApp('safari')">
-                <div class="app-icon bg-safari">🧭</div>
-            </div>
-            <div class="app-item" onclick="openApp('music')">
-                <div class="app-icon bg-music">🎵</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 앱 모달 창 -->
-    <div class="app-modal" id="appModal">
-        <div class="modal-header">
-            <span class="modal-title" id="modalTitle">앱</span>
-            <button class="close-btn" onclick="closeApp()">닫기</button>
-        </div>
-        <div class="modal-body" id="modalBody">내용</div>
-    </div>
-</div>
-
-<script>
-    function updateClock() {
-        const now = new Date();
-        const hours = String(now.getHours()).padStart(2, '0');
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        document.getElementById('clock').innerText = `${hours}:${minutes}`;
-        const options = { month: 'long', day: 'numeric', weekday: 'short' };
-        document.getElementById('date').innerText = now.toLocaleDateString('ko-KR', options);
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-
-    let currentPasscode = "";
-    const CORRECT_PASSCODE = "0000";
-
-    function pressKey(num) {
-        if (currentPasscode.length < 4) {
-            currentPasscode += num;
-            updateDots();
-            if (currentPasscode.length === 4) setTimeout(checkPasscode, 150);
-        }
-    }
-    function updateDots() {
-        for (let i = 0; i < 4; i++) {
-            const dot = document.getElementById(`dot${i}`);
-            if (i < currentPasscode.length) dot.classList.add('filled');
-            else dot.classList.remove('filled', 'error');
-        }
-    }
-    function checkPasscode() {
-        if (currentPasscode === CORRECT_PASSCODE) {
-            document.getElementById('lockScreen').classList.add('unlocked');
-            clearPasscode();
-        } else {
-            for (let i = 0; i < 4; i++) document.getElementById(`dot${i}`).classList.add('error');
-            document.getElementById('passcodeTitle').innerText = "비밀번호가 올바르지 않습니다";
-            setTimeout(() => {
-                clearPasscode();
-                document.getElementById('passcodeTitle').innerText = "비밀번호 입력 (0000)";
-            }, 600);
-        }
-    }
-    function clearPasscode() { currentPasscode = ""; updateDots(); }
-    function lock() { clearPasscode(); document.getElementById('lockScreen').classList.remove('unlocked'); }
-
-    // === Supabase DB Schema Simulation ===
-    const CURRENT_USER = {
-        id: "user-uuid-001",
-        username: "meong_dev",
-        display_name: "이윤서",
-        bio: "iOS & Quant Dev / Psychology",
-        avatar_url: "🐱"
-    };
-
-    const initialPosts = [
-        {
-            id: "post-1",
-            user_id: CURRENT_USER.id,
-            profile: { display_name: "미고", username: "_zzzzz222", avatar_url: "👧" },
-            content: "하늘나라가고싶은사람내가다보내줘야지",
-            created_at: "1일 전",
-            likes_count: 1500,
-            is_liked: false,
-            comments: [
-                { id: "c1", user: "심경실", text: "ㅋㅋㅋㅋㅋㅋㅋㅋ" }
-            ]
-        },
-        {
-            id: "post-2",
-            user_id: "user-uuid-002",
-            profile: { display_name: "심경실", username: "gyeongsil9", avatar_url: "👾" },
-            content: "나 왜 이 정신병이 영원할 것 같지?\n영원할건가보다",
-            created_at: "1일 전",
-            likes_count: 24800,
-            is_liked: true,
-            comments: []
-        }
-    ];
-
-    function getDBPosts() {
-        return JSON.parse(localStorage.getItem('db_posts') || JSON.stringify(initialPosts));
-    }
-    function saveDBPosts(posts) {
-        localStorage.setItem('db_posts', JSON.stringify(posts));
-    }
-
-    function renderPostsApp() {
-        const posts = getDBPosts();
-        let html = `
-            <div class="write-box">
-                <textarea id="postContent" class="write-textarea" maxlength="280" placeholder="무슨 일이 일어나고 있나요? (최대 280자)" rows="3" oninput="updateCharCount(this)"></textarea>
-                <div class="write-footer">
-                    <span class="char-counter" id="charCounter">0 / 280자</span>
-                    <button class="write-btn" onclick="createPost()">게시하기</button>
-                </div>
-            </div>
-            <div id="postsList">
-        `;
-
-        posts.forEach(p => {
-            html += `
-                <div class="post-item">
-                    <div class="post-avatar">${p.profile.avatar_url}</div>
-                    <div class="post-content">
-                        <div class="post-header">
-                            <span class="post-displayname">${p.profile.display_name}</span>
-                            <span class="post-username">@${p.profile.username} · ${p.created_at}</span>
-                        </div>
-                        <div class="post-text">${p.content}</div>
-                        <div class="post-actions">
-                            <div class="action-btn ${p.is_liked ? 'liked' : ''}" onclick="toggleLike('${p.id}')">
-                                ${p.is_liked ? '❤️' : '🤍'} ${p.likes_count}
-                            </div>
-                            <div class="action-btn">💬 ${p.comments.length}</div>
-                        </div>
-
-                        <!-- Comments (public.comments) -->
-                        <div class="comments-section">
-                            ${p.comments.map(c => `
-                                <div class="comment-item"><b>${c.user}</b>: ${c.text}</div>
-                            `).join('')}
-                            <div class="comment-input-box">
-                                <input type="text" id="cmt-${p.id}" class="comment-input" placeholder="댓글 달기...">
-                                <button style="background:#2563eb; color:#fff; border:none; border-radius:4px; padding:2px 8px; font-size:11px; cursor:pointer;" onclick="addComment('${p.id}')">등록</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-        });
-        html += `</div>`;
-        return html;
-    }
-
-    function updateCharCount(el) {
-        document.getElementById('charCounter').innerText = `${el.value.length} / 280자`;
-    }
-
-    // CREATE (public.posts)
-    function createPost() {
-        const content = document.getElementById('postContent').value.trim();
-        if(!content) return alert('내용을 입력해주세요!');
-        if(content.length > 280) return alert('280자를 초과할 수 없습니다!');
-
-        const posts = getDBPosts();
-        posts.unshift({
-            id: 'post-' + Date.now(),
-            user_id: CURRENT_USER.id,
-            profile: { display_name: CURRENT_USER.display_name, username: CURRENT_USER.username, avatar_url: CURRENT_USER.avatar_url },
-            content: content,
-            created_at: "방금 전",
-            likes_count: 0,
-            is_liked: false,
-            comments: []
-        });
-        saveDBPosts(posts);
-        document.getElementById('modalBody').innerHTML = renderPostsApp();
-    }
-
-    // UNIQUE LIKE TOGGLE (public.likes)
-    function toggleLike(postId) {
-        const posts = getDBPosts();
-        const post = posts.find(p => p.id === postId);
-        if(post) {
-            if(post.is_liked) {
-                post.likes_count--;
-                post.is_liked = false;
-            } else {
-                post.likes_count++;
-                post.is_liked = true;
-            }
-            saveDBPosts(posts);
-            document.getElementById('modalBody').innerHTML = renderPostsApp();
-        }
-    }
-
-    // INSERT (public.comments)
-    function addComment(postId) {
-        const input = document.getElementById(`cmt-${postId}`);
-        const text = input.value.trim();
-        if(!text) return;
-
-        const posts = getDBPosts();
-        const post = posts.find(p => p.id === postId);
-        if(post) {
-            post.comments.push({ id: 'c-' + Date.now(), user: CURRENT_USER.display_name, text: text });
-            saveDBPosts(posts);
-            document.getElementById('modalBody').innerHTML = renderPostsApp();
-        }
-    }
-
-    const appData = {
-        profile: {
-            title: "👤 프로필",
-            getContent: () => `
-                <div class="profile-card">
-                    <div class="profile-avatar-lg">${CURRENT_USER.avatar_url}</div>
-                    <h3>${CURRENT_USER.display_name}</h3>
-                    <p style="color:#71717a; font-size:13px;">@${CURRENT_USER.username}</p>
-                    <p style="color:#a1a1aa; font-size:13px; margin-top:10px;">${CURRENT_USER.bio}</p>
-                </div>
-            `
-        },
-        posts: {
-            title: "🐦 포스트 (X)",
-            getContent: renderPostsApp
-        },
-        messages: {
-            title: "💬 메시지",
-            getContent: () => `<div style="padding:16px;"><h3>💬 메시지 대화방</h3></div>`
-        },
-        instagram: { title: "📸 Instagram", getContent: () => `<div style="padding:16px;"><h3>📸 Instagram Feed</h3></div>` },
-        dcinside: { title: "💬 디시인사이드", getContent: () => `<div style="padding:16px;"><h3>💬 디시 갤러리</h3></div>` },
-        memo: { title: "📒 메모장", getContent: () => `<div style="padding:16px;"><h3>아이폰 메모</h3></div>` },
-        phone: { title: "📞 전화", getContent: () => `<div style="text-align:center; padding:30px;"><h2>010-0000-0000</h2></div>` },
-        safari: { title: "🧭 Safari", getContent: () => `<div style="padding:16px;"><a href="https://google.com" target="_blank" style="color:#38bdf8;">Google 검색</a></div>` },
-        music: { title: "🎵 음악", getContent: () => `<div style="padding:16px;"><h3>🎵 Lofi Chill</h3></div>` },
-        guestbook: { title: "📝 방명록", getContent: () => `<div style="padding:16px;"><h3>방명록</h3></div>` }
-    };
-
-    function openApp(appName) {
-        const modal = document.getElementById('appModal');
-        const data = appData[appName];
-        document.getElementById('modalTitle').innerText = data.title;
-        document.getElementById('modalBody').innerHTML = data.getContent();
-        modal.classList.add('active');
-    }
-    function closeApp() { document.getElementById('appModal').classList.remove('active'); }
-</script>
-
-</body>
-</html>
+        <div class="top-row">
+          <div class="tile dark*
+
