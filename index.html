@@ -31,7 +31,7 @@
         .key-btn { width: 60px; height: 60px; border-radius: 50%; background: rgba(255,255,255,0.15); border: none; color: #fff; font-size: 24px; font-weight: 500; cursor: pointer; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
         .key-btn:active { background: rgba(255,255,255,0.4); }
 
-        /* Homescreen Grid & Dock */
+        /* Homescreen Apps & Dock */
         .app-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px 14px; margin-top: 10px; }
         .dock { background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(20px); border-radius: 30px; padding: 12px 14px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 10px; }
         .app-item { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; }
@@ -39,10 +39,9 @@
         .app-icon:active { transform: scale(0.88); }
         .app-name { font-size: 11px; font-weight: 500; text-shadow: 0 1px 4px rgba(0,0,0,0.8); }
         
-        /* App Colors */
         .bg-profile { background: linear-gradient(135deg, #38bdf8, #0284c7); }
-        .bg-insta { background: linear-gradient(135deg, #f58529, #dd2a7b, #8134af); }
         .bg-twitter { background: linear-gradient(135deg, #38bdf8, #0f172a); }
+        .bg-insta { background: linear-gradient(135deg, #f58529, #dd2a7b, #8134af); }
         .bg-dc { background: linear-gradient(135deg, #2563eb, #1e3a8a); }
         .bg-guest { background: linear-gradient(135deg, #34d399, #059669); }
         .bg-memo { background: linear-gradient(135deg, #f59e0b, #d97706); }
@@ -60,35 +59,33 @@
         .close-btn { background: #27272a; color: #a1a1aa; border: none; padding: 6px 14px; border-radius: 20px; font-weight: 600; cursor: pointer; font-size: 13px; }
         .modal-body { padding: 0; overflow-y: auto; flex: 1; font-size: 14px; line-height: 1.6; }
 
-        /* Twitter UI */
-        .tweet-item { padding: 14px 16px; border-bottom: 1px solid #27272a; display: flex; gap: 12px; }
-        .tweet-avatar { width: 40px; height: 40px; border-radius: 50%; background: #38bdf8; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
-        .tweet-content { flex: 1; }
-        .tweet-header { display: flex; gap: 6px; align-items: center; margin-bottom: 4px; }
-        .tweet-name { font-weight: 700; color: #fff; }
-        .tweet-handle { color: #71717a; font-size: 13px; }
-        .tweet-text { color: #e4e4e7; font-size: 14px; margin-bottom: 8px; white-space: pre-line; }
-        .tweet-img { width: 100%; border-radius: 14px; border: 1px solid #27272a; margin-top: 6px; }
-        .tweet-actions { display: flex; justify-content: space-between; color: #71717a; font-size: 13px; margin-top: 10px; padding-right: 20px; }
+        /* Posts Table DB UI */
+        .post-item { padding: 14px 16px; border-bottom: 1px solid #27272a; display: flex; gap: 12px; }
+        .post-avatar { width: 40px; height: 40px; border-radius: 50%; background: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; overflow: hidden; }
+        .post-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .post-content { flex: 1; }
+        .post-header { display: flex; gap: 6px; align-items: center; margin-bottom: 4px; }
+        .post-displayname { font-weight: 700; color: #fff; }
+        .post-username { color: #71717a; font-size: 13px; }
+        .post-text { color: #e4e4e7; font-size: 14px; margin-bottom: 8px; white-space: pre-line; word-break: break-word; }
+        .post-actions { display: flex; gap: 20px; color: #71717a; font-size: 13px; margin-top: 10px; }
+        .action-btn { cursor: pointer; transition: color 0.2s; display: flex; align-items: center; gap: 4px; }
+        .action-btn.liked { color: #ef4444; }
 
-        /* Message Bubble UI */
-        .chat-container { padding: 16px; }
-        .chat-list { display: flex; flex-direction: column; gap: 12px; }
-        .chat-bubble { max-width: 80%; padding: 10px 14px; border-radius: 18px; font-size: 14px; line-height: 1.4; }
-        .chat-bubble.me { background: #2563eb; color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
-        .chat-bubble.other { background: #27272a; color: #fff; align-self: flex-start; border-bottom-left-radius: 4px; }
-        .chat-input-box { display: flex; gap: 8px; padding: 12px 16px; border-top: 1px solid #27272a; background: #121214; }
-        .chat-input { flex: 1; background: #18181b; border: 1px solid #27272a; color: #fff; padding: 10px 14px; border-radius: 20px; outline: none; font-size: 14px; }
-        .chat-send { background: #2563eb; color: #fff; border: none; padding: 8px 16px; border-radius: 20px; font-weight: 600; cursor: pointer; }
-
-        /* Form styling */
         .write-box { padding: 16px; border-bottom: 1px solid #27272a; background: #18181b; }
-        .write-input { width: 100%; padding: 10px; background: #09090b; border: 1px solid #27272a; color: #fff; border-radius: 10px; margin-bottom: 8px; font-size: 13px; outline: none; }
-        .write-btn { width: 100%; padding: 10px; background: #1d9bf0; color: #fff; border: none; border-radius: 20px; font-weight: 700; cursor: pointer; }
+        .write-textarea { width: 100%; padding: 10px; background: #09090b; border: 1px solid #27272a; color: #fff; border-radius: 10px; margin-bottom: 8px; font-size: 14px; outline: none; resize: none; }
+        .write-footer { display: flex; justify-content: space-between; align-items: center; }
+        .char-counter { font-size: 12px; color: #71717a; }
+        .write-btn { padding: 8px 18px; background: #1d9bf0; color: #fff; border: none; border-radius: 20px; font-weight: 700; cursor: pointer; }
+
+        /* Comments UI */
+        .comments-section { margin-top: 10px; background: #18181b; padding: 10px; border-radius: 8px; }
+        .comment-item { font-size: 12px; padding: 4px 0; border-bottom: 1px solid #27272a; color: #d4d4d8; }
+        .comment-input-box { display: flex; gap: 6px; margin-top: 6px; }
+        .comment-input { flex: 1; background: #09090b; border: 1px solid #27272a; color: #fff; padding: 4px 8px; border-radius: 6px; font-size: 12px; }
 
         .profile-card { text-align: center; padding: 24px 16px; }
         .profile-avatar-lg { width: 80px; height: 80px; border-radius: 50%; background: #3b82f6; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 36px; }
-        .link-btn { display: block; width: 100%; padding: 14px; background: #27272a; color: #fff; text-align: center; border-radius: 14px; text-decoration: none; font-weight: 600; margin-bottom: 10px; }
     </style>
 </head>
 <body>
@@ -130,15 +127,15 @@
             </div>
         </div>
 
-        <!-- 홈 화면 앱들 -->
+        <!-- 홈 화면 앱 목록 -->
         <div class="app-grid">
             <div class="app-item" onclick="openApp('profile')">
                 <div class="app-icon bg-profile">👤</div>
                 <div class="app-name">프로필</div>
             </div>
-            <div class="app-item" onclick="openApp('twitter')">
+            <div class="app-item" onclick="openApp('posts')">
                 <div class="app-icon bg-twitter">🐦</div>
-                <div class="app-name">X (트위터)</div>
+                <div class="app-name">포스트 (X)</div>
             </div>
             <div class="app-item" onclick="openApp('instagram')">
                 <div class="app-icon bg-insta">📸</div>
@@ -234,56 +231,86 @@
     function clearPasscode() { currentPasscode = ""; updateDots(); }
     function lock() { clearPasscode(); document.getElementById('lockScreen').classList.remove('unlocked'); }
 
-    // 트위터 샘플 데이터
-    const defaultTweets = [
+    // === Supabase DB Schema Simulation ===
+    const CURRENT_USER = {
+        id: "user-uuid-001",
+        username: "meong_dev",
+        display_name: "이윤서",
+        bio: "iOS & Quant Dev / Psychology",
+        avatar_url: "🐱"
+    };
+
+    const initialPosts = [
         {
-            name: "미고",
-            handle: "@_zzzzz222",
-            time: "1일",
-            avatar: "👧",
-            text: "하늘나라가고싶은사람내가다보내줘야지",
-            img: "https://images.unsplash.com/photo-1543466835-00a7907e9de1?q=80&w=600&auto=format&fit=crop",
-            likes: "1.5천",
-            retweets: "883"
+            id: "post-1",
+            user_id: CURRENT_USER.id,
+            profile: { display_name: "미고", username: "_zzzzz222", avatar_url: "👧" },
+            content: "하늘나라가고싶은사람내가다보내줘야지",
+            created_at: "1일 전",
+            likes_count: 1500,
+            is_liked: false,
+            comments: [
+                { id: "c1", user: "심경실", text: "ㅋㅋㅋㅋㅋㅋㅋㅋ" }
+            ]
         },
         {
-            name: "심경실",
-            handle: "@gyeongsil9",
-            time: "1일",
-            avatar: "👾",
-            text: "나 왜 이 정신병이 영원할 것 같지?\n영원할건가보다",
-            img: "",
-            likes: "24.8천",
-            retweets: "14.2천"
+            id: "post-2",
+            user_id: "user-uuid-002",
+            profile: { display_name: "심경실", username: "gyeongsil9", avatar_url: "👾" },
+            content: "나 왜 이 정신병이 영원할 것 같지?\n영원할건가보다",
+            created_at: "1일 전",
+            likes_count: 24800,
+            is_liked: true,
+            comments: []
         }
     ];
 
-    function renderTwitter() {
-        const tweets = JSON.parse(localStorage.getItem('my_tweets') || JSON.stringify(defaultTweets));
+    function getDBPosts() {
+        return JSON.parse(localStorage.getItem('db_posts') || JSON.stringify(initialPosts));
+    }
+    function saveDBPosts(posts) {
+        localStorage.setItem('db_posts', JSON.stringify(posts));
+    }
+
+    function renderPostsApp() {
+        const posts = getDBPosts();
         let html = `
             <div class="write-box">
-                <textarea id="twText" class="write-input" placeholder="무슨 일이 일어나고 있나요?" rows="2"></textarea>
-                <input type="text" id="twImg" class="write-input" placeholder="이미지 URL (선택)">
-                <button class="write-btn" onclick="addTweet()">게시하기</button>
+                <textarea id="postContent" class="write-textarea" maxlength="280" placeholder="무슨 일이 일어나고 있나요? (최대 280자)" rows="3" oninput="updateCharCount(this)"></textarea>
+                <div class="write-footer">
+                    <span class="char-counter" id="charCounter">0 / 280자</span>
+                    <button class="write-btn" onclick="createPost()">게시하기</button>
+                </div>
             </div>
-            <div>
+            <div id="postsList">
         `;
-        tweets.forEach(t => {
+
+        posts.forEach(p => {
             html += `
-                <div class="tweet-item">
-                    <div class="tweet-avatar">${t.avatar || '👤'}</div>
-                    <div class="tweet-content">
-                        <div class="tweet-header">
-                            <span class="tweet-name">${t.name}</span>
-                            <span class="tweet-handle">${t.handle} · ${t.time}</span>
+                <div class="post-item">
+                    <div class="post-avatar">${p.profile.avatar_url}</div>
+                    <div class="post-content">
+                        <div class="post-header">
+                            <span class="post-displayname">${p.profile.display_name}</span>
+                            <span class="post-username">@${p.profile.username} · ${p.created_at}</span>
                         </div>
-                        <div class="tweet-text">${t.text}</div>
-                        ${t.img ? `<img src="${t.img}" class="tweet-img">` : ''}
-                        <div class="tweet-actions">
-                            <span>💬 4</span>
-                            <span>🔁 ${t.retweets || 0}</span>
-                            <span>❤️ ${t.likes || 0}</span>
-                            <span>📊 70.1천</span>
+                        <div class="post-text">${p.content}</div>
+                        <div class="post-actions">
+                            <div class="action-btn ${p.is_liked ? 'liked' : ''}" onclick="toggleLike('${p.id}')">
+                                ${p.is_liked ? '❤️' : '🤍'} ${p.likes_count}
+                            </div>
+                            <div class="action-btn">💬 ${p.comments.length}</div>
+                        </div>
+
+                        <!-- Comments (public.comments) -->
+                        <div class="comments-section">
+                            ${p.comments.map(c => `
+                                <div class="comment-item"><b>${c.user}</b>: ${c.text}</div>
+                            `).join('')}
+                            <div class="comment-input-box">
+                                <input type="text" id="cmt-${p.id}" class="comment-input" placeholder="댓글 달기...">
+                                <button style="background:#2563eb; color:#fff; border:none; border-radius:4px; padding:2px 8px; font-size:11px; cursor:pointer;" onclick="addComment('${p.id}')">등록</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -293,24 +320,61 @@
         return html;
     }
 
-    function addTweet() {
-        const text = document.getElementById('twText').value.trim();
-        const img = document.getElementById('twImg').value.trim();
-        if(!text) return alert('내용을 입력해주세요!');
+    function updateCharCount(el) {
+        document.getElementById('charCounter').innerText = `${el.value.length} / 280자`;
+    }
 
-        const tweets = JSON.parse(localStorage.getItem('my_tweets') || JSON.stringify(defaultTweets));
-        tweets.unshift({
-            name: "나",
-            handle: "@me",
-            time: "방금",
-            avatar: "✨",
-            text: text,
-            img: img,
-            likes: "0",
-            retweets: "0"
+    // CREATE (public.posts)
+    function createPost() {
+        const content = document.getElementById('postContent').value.trim();
+        if(!content) return alert('내용을 입력해주세요!');
+        if(content.length > 280) return alert('280자를 초과할 수 없습니다!');
+
+        const posts = getDBPosts();
+        posts.unshift({
+            id: 'post-' + Date.now(),
+            user_id: CURRENT_USER.id,
+            profile: { display_name: CURRENT_USER.display_name, username: CURRENT_USER.username, avatar_url: CURRENT_USER.avatar_url },
+            content: content,
+            created_at: "방금 전",
+            likes_count: 0,
+            is_liked: false,
+            comments: []
         });
-        localStorage.setItem('my_tweets', JSON.stringify(tweets));
-        document.getElementById('modalBody').innerHTML = renderTwitter();
+        saveDBPosts(posts);
+        document.getElementById('modalBody').innerHTML = renderPostsApp();
+    }
+
+    // UNIQUE LIKE TOGGLE (public.likes)
+    function toggleLike(postId) {
+        const posts = getDBPosts();
+        const post = posts.find(p => p.id === postId);
+        if(post) {
+            if(post.is_liked) {
+                post.likes_count--;
+                post.is_liked = false;
+            } else {
+                post.likes_count++;
+                post.is_liked = true;
+            }
+            saveDBPosts(posts);
+            document.getElementById('modalBody').innerHTML = renderPostsApp();
+        }
+    }
+
+    // INSERT (public.comments)
+    function addComment(postId) {
+        const input = document.getElementById(`cmt-${postId}`);
+        const text = input.value.trim();
+        if(!text) return;
+
+        const posts = getDBPosts();
+        const post = posts.find(p => p.id === postId);
+        if(post) {
+            post.comments.push({ id: 'c-' + Date.now(), user: CURRENT_USER.display_name, text: text });
+            saveDBPosts(posts);
+            document.getElementById('modalBody').innerHTML = renderPostsApp();
+        }
     }
 
     const appData = {
@@ -318,67 +382,28 @@
             title: "👤 프로필",
             getContent: () => `
                 <div class="profile-card">
-                    <div class="profile-avatar-lg">✨</div>
-                    <h3>나의 아이폰 공간</h3>
-                    <p style="color:#a1a1aa; font-size:13px; margin-top:4px;">환영합니다!</p>
+                    <div class="profile-avatar-lg">${CURRENT_USER.avatar_url}</div>
+                    <h3>${CURRENT_USER.display_name}</h3>
+                    <p style="color:#71717a; font-size:13px;">@${CURRENT_USER.username}</p>
+                    <p style="color:#a1a1aa; font-size:13px; margin-top:10px;">${CURRENT_USER.bio}</p>
                 </div>
             `
         },
-        twitter: {
-            title: "🐦 X (트위터)",
-            getContent: renderTwitter
+        posts: {
+            title: "🐦 포스트 (X)",
+            getContent: renderPostsApp
         },
         messages: {
             title: "💬 메시지",
-            getContent: () => `
-                <div class="chat-container">
-                    <div class="chat-list" id="chatList">
-                        <div class="chat-bubble other">안녕! 아이폰 포트폴리오에 온 걸 환영해! 📱</div>
-                        <div class="chat-bubble me">고마워! 문자 주고받기가 구현되었네!</div>
-                    </div>
-                </div>
-                <div class="chat-input-box">
-                    <input type="text" id="chatMsg" class="chat-input" placeholder="문자 메시지 입력...">
-                    <button class="chat-send" onclick="sendMessage()">전송</button>
-                </div>
-            `
+            getContent: () => `<div style="padding:16px;"><h3>💬 메시지 대화방</h3></div>`
         },
-        instagram: {
-            title: "📸 Instagram",
-            getContent: () => `
-                <div style="padding:16px;">
-                    <h3>📸 Instagram Feed</h3>
-                    <p style="color:#a1a1aa; margin-top:8px;">인스타그램 피드가 연결되는 공간입니다.</p>
-                </div>
-            `
-        },
-        dcinside: {
-            title: "💬 디시인사이드",
-            getContent: () => `
-                <div style="padding:16px;">
-                    <h3>💬 디시인사이드 갤러리</h3>
-                    <p style="color:#a1a1aa; margin-top:8px;">자유롭게 수다를 떠는 게시판 공간입니다.</p>
-                </div>
-            `
-        },
-        memo: {
-            title: "📒 메모장",
-            getContent: () => `<div style="padding:16px;"><h3>아이폰 메모</h3><p style="color:#a1a1aa; margin-top:8px;">생각을 자유롭게 기록하세요.</p></div>`
-        },
+        instagram: { title: "📸 Instagram", getContent: () => `<div style="padding:16px;"><h3>📸 Instagram Feed</h3></div>` },
+        dcinside: { title: "💬 디시인사이드", getContent: () => `<div style="padding:16px;"><h3>💬 디시 갤러리</h3></div>` },
+        memo: { title: "📒 메모장", getContent: () => `<div style="padding:16px;"><h3>아이폰 메모</h3></div>` },
         phone: { title: "📞 전화", getContent: () => `<div style="text-align:center; padding:30px;"><h2>010-0000-0000</h2></div>` },
-        safari: { title: "🧭 Safari", getContent: () => `<div style="padding:16px;"><a href="https://google.com" target="_blank" class="link-btn">Google 검색하기</a></div>` },
-        music: { title: "🎵 음악", getContent: () => `<div style="padding:16px;"><h3>🎧 Lofi Chill</h3></div>` },
-        guestbook: {
-            title: "📝 방명록",
-            getContent: () => `
-                <div style="padding:16px;">
-                    <input type="text" id="gbName" class="write-input" placeholder="이름">
-                    <textarea id="gbMsg" class="write-input" placeholder="메시지를 남겨주세요!" rows="3"></textarea>
-                    <button class="write-btn" onclick="saveGuestbook()">등록하기</button>
-                    <div id="gbList" style="margin-top:15px;"></div>
-                </div>
-            `
-        }
+        safari: { title: "🧭 Safari", getContent: () => `<div style="padding:16px;"><a href="https://google.com" target="_blank" style="color:#38bdf8;">Google 검색</a></div>` },
+        music: { title: "🎵 음악", getContent: () => `<div style="padding:16px;"><h3>🎵 Lofi Chill</h3></div>` },
+        guestbook: { title: "📝 방명록", getContent: () => `<div style="padding:16px;"><h3>방명록</h3></div>` }
     };
 
     function openApp(appName) {
@@ -387,42 +412,8 @@
         document.getElementById('modalTitle').innerText = data.title;
         document.getElementById('modalBody').innerHTML = data.getContent();
         modal.classList.add('active');
-        if(appName === 'guestbook') loadGuestbook();
     }
     function closeApp() { document.getElementById('appModal').classList.remove('active'); }
-
-    function sendMessage() {
-        const input = document.getElementById('chatMsg');
-        const msg = input.value.trim();
-        if(!msg) return;
-        const chatList = document.getElementById('chatList');
-        const newBubble = document.createElement('div');
-        newBubble.className = 'chat-bubble me';
-        newBubble.innerText = msg;
-        chatList.appendChild(newBubble);
-        input.value = '';
-    }
-
-    function saveGuestbook() {
-        const name = document.getElementById('gbName').value.trim();
-        const msg = document.getElementById('gbMsg').value.trim();
-        if(!name || !msg) return alert('내용을 입력해주세요!');
-        const list = JSON.parse(localStorage.getItem('iphone_gb') || '[]');
-        list.unshift({ name, msg, date: new Date().toLocaleDateString() });
-        localStorage.setItem('iphone_gb', JSON.stringify(list));
-        loadGuestbook();
-    }
-    function loadGuestbook() {
-        const list = JSON.parse(localStorage.getItem('iphone_gb') || '[]');
-        const container = document.getElementById('gbList');
-        if(!container) return;
-        container.innerHTML = list.map(item => `
-            <div style="background:#18181b; padding:10px; border-radius:10px; margin-bottom:8px; border:1px solid #27272a;">
-                <b>${item.name}</b> <small style="color:#71717a;">(${item.date})</small>
-                <p style="margin-top:4px;">${item.msg}</p>
-            </div>
-        `).join('');
-    }
 </script>
 
 </body>
