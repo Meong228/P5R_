@@ -58,23 +58,37 @@
         .modal-header { padding: 35px 20px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #27272a; }
         .modal-title { font-size: 17px; font-weight: 600; }
         .close-btn { background: #27272a; color: #a1a1aa; border: none; padding: 6px 14px; border-radius: 20px; font-weight: 600; cursor: pointer; font-size: 13px; }
-        .modal-body { padding: 20px; overflow-y: auto; flex: 1; font-size: 14px; line-height: 1.6; }
+        .modal-body { padding: 0; overflow-y: auto; flex: 1; font-size: 14px; line-height: 1.6; }
+
+        /* Twitter UI */
+        .tweet-item { padding: 14px 16px; border-bottom: 1px solid #27272a; display: flex; gap: 12px; }
+        .tweet-avatar { width: 40px; height: 40px; border-radius: 50%; background: #38bdf8; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+        .tweet-content { flex: 1; }
+        .tweet-header { display: flex; gap: 6px; align-items: center; margin-bottom: 4px; }
+        .tweet-name { font-weight: 700; color: #fff; }
+        .tweet-handle { color: #71717a; font-size: 13px; }
+        .tweet-text { color: #e4e4e7; font-size: 14px; margin-bottom: 8px; white-space: pre-line; }
+        .tweet-img { width: 100%; border-radius: 14px; border: 1px solid #27272a; margin-top: 6px; }
+        .tweet-actions { display: flex; justify-content: space-between; color: #71717a; font-size: 13px; margin-top: 10px; padding-right: 20px; }
 
         /* Message Bubble UI */
+        .chat-container { padding: 16px; }
         .chat-list { display: flex; flex-direction: column; gap: 12px; }
         .chat-bubble { max-width: 80%; padding: 10px 14px; border-radius: 18px; font-size: 14px; line-height: 1.4; }
         .chat-bubble.me { background: #2563eb; color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
         .chat-bubble.other { background: #27272a; color: #fff; align-self: flex-start; border-bottom-left-radius: 4px; }
-        .chat-input-box { display: flex; gap: 8px; margin-top: 15px; padding-top: 10px; border-top: 1px solid #27272a; }
+        .chat-input-box { display: flex; gap: 8px; padding: 12px 16px; border-top: 1px solid #27272a; background: #121214; }
         .chat-input { flex: 1; background: #18181b; border: 1px solid #27272a; color: #fff; padding: 10px 14px; border-radius: 20px; outline: none; font-size: 14px; }
         .chat-send { background: #2563eb; color: #fff; border: none; padding: 8px 16px; border-radius: 20px; font-weight: 600; cursor: pointer; }
 
-        /* Profile & Buttons */
-        .profile-card { text-align: center; margin-bottom: 20px; }
-        .profile-avatar { width: 80px; height: 80px; border-radius: 50%; background: #3b82f6; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 36px; }
+        /* Form styling */
+        .write-box { padding: 16px; border-bottom: 1px solid #27272a; background: #18181b; }
+        .write-input { width: 100%; padding: 10px; background: #09090b; border: 1px solid #27272a; color: #fff; border-radius: 10px; margin-bottom: 8px; font-size: 13px; outline: none; }
+        .write-btn { width: 100%; padding: 10px; background: #1d9bf0; color: #fff; border: none; border-radius: 20px; font-weight: 700; cursor: pointer; }
+
+        .profile-card { text-align: center; padding: 24px 16px; }
+        .profile-avatar-lg { width: 80px; height: 80px; border-radius: 50%; background: #3b82f6; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 36px; }
         .link-btn { display: block; width: 100%; padding: 14px; background: #27272a; color: #fff; text-align: center; border-radius: 14px; text-decoration: none; font-weight: 600; margin-bottom: 10px; }
-        .gb-input { width: 100%; padding: 12px; background: #18181b; border: 1px solid #27272a; color: #fff; border-radius: 12px; margin-bottom: 10px; font-size: 14px; outline: none; }
-        .gb-btn { width: 100%; padding: 12px; background: #3b82f6; color: #fff; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -116,19 +130,19 @@
             </div>
         </div>
 
-        <!-- 홈 화면 메인 앱들 -->
+        <!-- 홈 화면 앱들 -->
         <div class="app-grid">
             <div class="app-item" onclick="openApp('profile')">
                 <div class="app-icon bg-profile">👤</div>
                 <div class="app-name">프로필</div>
             </div>
-            <div class="app-item" onclick="openApp('instagram')">
-                <div class="app-icon bg-insta">📸</div>
-                <div class="app-name">Instagram</div>
-            </div>
             <div class="app-item" onclick="openApp('twitter')">
                 <div class="app-icon bg-twitter">🐦</div>
                 <div class="app-name">X (트위터)</div>
+            </div>
+            <div class="app-item" onclick="openApp('instagram')">
+                <div class="app-icon bg-insta">📸</div>
+                <div class="app-name">Instagram</div>
             </div>
             <div class="app-item" onclick="openApp('dcinside')">
                 <div class="app-icon bg-dc">💬</div>
@@ -148,7 +162,7 @@
             </div>
         </div>
 
-        <!-- 하단 Dock 바 (문자, 전화, 사파리, 음악) -->
+        <!-- 하단 Dock 바 -->
         <div class="dock">
             <div class="app-item" onclick="openApp('phone')">
                 <div class="app-icon bg-phone">📞</div>
@@ -181,14 +195,12 @@
         const hours = String(now.getHours()).padStart(2, '0');
         const minutes = String(now.getMinutes()).padStart(2, '0');
         document.getElementById('clock').innerText = `${hours}:${minutes}`;
-        
         const options = { month: 'long', day: 'numeric', weekday: 'short' };
         document.getElementById('date').innerText = now.toLocaleDateString('ko-KR', options);
     }
     setInterval(updateClock, 1000);
     updateClock();
 
-    // 암호 0000
     let currentPasscode = "";
     const CORRECT_PASSCODE = "0000";
 
@@ -222,25 +234,108 @@
     function clearPasscode() { currentPasscode = ""; updateDots(); }
     function lock() { clearPasscode(); document.getElementById('lockScreen').classList.remove('unlocked'); }
 
-    // 앱 데이터
+    // 트위터 샘플 데이터
+    const defaultTweets = [
+        {
+            name: "미고",
+            handle: "@_zzzzz222",
+            time: "1일",
+            avatar: "👧",
+            text: "하늘나라가고싶은사람내가다보내줘야지",
+            img: "https://images.unsplash.com/photo-1543466835-00a7907e9de1?q=80&w=600&auto=format&fit=crop",
+            likes: "1.5천",
+            retweets: "883"
+        },
+        {
+            name: "심경실",
+            handle: "@gyeongsil9",
+            time: "1일",
+            avatar: "👾",
+            text: "나 왜 이 정신병이 영원할 것 같지?\n영원할건가보다",
+            img: "",
+            likes: "24.8천",
+            retweets: "14.2천"
+        }
+    ];
+
+    function renderTwitter() {
+        const tweets = JSON.parse(localStorage.getItem('my_tweets') || JSON.stringify(defaultTweets));
+        let html = `
+            <div class="write-box">
+                <textarea id="twText" class="write-input" placeholder="무슨 일이 일어나고 있나요?" rows="2"></textarea>
+                <input type="text" id="twImg" class="write-input" placeholder="이미지 URL (선택)">
+                <button class="write-btn" onclick="addTweet()">게시하기</button>
+            </div>
+            <div>
+        `;
+        tweets.forEach(t => {
+            html += `
+                <div class="tweet-item">
+                    <div class="tweet-avatar">${t.avatar || '👤'}</div>
+                    <div class="tweet-content">
+                        <div class="tweet-header">
+                            <span class="tweet-name">${t.name}</span>
+                            <span class="tweet-handle">${t.handle} · ${t.time}</span>
+                        </div>
+                        <div class="tweet-text">${t.text}</div>
+                        ${t.img ? `<img src="${t.img}" class="tweet-img">` : ''}
+                        <div class="tweet-actions">
+                            <span>💬 4</span>
+                            <span>🔁 ${t.retweets || 0}</span>
+                            <span>❤️ ${t.likes || 0}</span>
+                            <span>📊 70.1천</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        html += `</div>`;
+        return html;
+    }
+
+    function addTweet() {
+        const text = document.getElementById('twText').value.trim();
+        const img = document.getElementById('twImg').value.trim();
+        if(!text) return alert('내용을 입력해주세요!');
+
+        const tweets = JSON.parse(localStorage.getItem('my_tweets') || JSON.stringify(defaultTweets));
+        tweets.unshift({
+            name: "나",
+            handle: "@me",
+            time: "방금",
+            avatar: "✨",
+            text: text,
+            img: img,
+            likes: "0",
+            retweets: "0"
+        });
+        localStorage.setItem('my_tweets', JSON.stringify(tweets));
+        document.getElementById('modalBody').innerHTML = renderTwitter();
+    }
+
     const appData = {
         profile: {
             title: "👤 프로필",
-            content: `
+            getContent: () => `
                 <div class="profile-card">
-                    <div class="profile-avatar">✨</div>
-                    <h3>나의 포트폴리오</h3>
-                    <p style="color:#a1a1aa; font-size:13px;">아이폰 UI 공간입니다.</p>
+                    <div class="profile-avatar-lg">✨</div>
+                    <h3>나의 아이폰 공간</h3>
+                    <p style="color:#a1a1aa; font-size:13px; margin-top:4px;">환영합니다!</p>
                 </div>
-                <p style="color:#a1a1aa;">원하는 링크와 소개글을 자유롭게 배치할 수 있습니다!</p>
             `
         },
+        twitter: {
+            title: "🐦 X (트위터)",
+            getContent: renderTwitter
+        },
         messages: {
-            title: "💬 메시지 (문자)",
-            content: `
-                <div class="chat-list" id="chatList">
-                    <div class="chat-bubble other">안녕! 아이폰 포트폴리오 사이트에 온 걸 환영해! 📱</div>
-                    <div class="chat-bubble me">고마워! 문자를 직접 입력해서 대화할 수도 있네?</div>
+            title: "💬 메시지",
+            getContent: () => `
+                <div class="chat-container">
+                    <div class="chat-list" id="chatList">
+                        <div class="chat-bubble other">안녕! 아이폰 포트폴리오에 온 걸 환영해! 📱</div>
+                        <div class="chat-bubble me">고마워! 문자 주고받기가 구현되었네!</div>
+                    </div>
                 </div>
                 <div class="chat-input-box">
                     <input type="text" id="chatMsg" class="chat-input" placeholder="문자 메시지 입력...">
@@ -248,46 +343,40 @@
                 </div>
             `
         },
-        phone: {
-            title: "📞 전화",
-            content: `
-                <div style="text-align:center; padding: 20px 0;">
-                    <h2 style="font-size:32px; margin-bottom:20px;">010-0000-0000</h2>
-                    <button style="width:70px; height:70px; border-radius:50%; background:#22c55e; border:none; color:#fff; font-size:28px; cursor:pointer;" onclick="alert('전화 연결 중...')">📞</button>
+        instagram: {
+            title: "📸 Instagram",
+            getContent: () => `
+                <div style="padding:16px;">
+                    <h3>📸 Instagram Feed</h3>
+                    <p style="color:#a1a1aa; margin-top:8px;">인스타그램 피드가 연결되는 공간입니다.</p>
                 </div>
             `
         },
-        instagram: {
-            title: "📸 Instagram",
-            content: `<h3>Instagram Feed</h3><br><a href="https://instagram.com" target="_blank" class="link-btn">인스타그램 바로가기</a>`
-        },
-        twitter: {
-            title: "🐦 X (Twitter)",
-            content: `<h3>X Timeline</h3><br><a href="https://twitter.com" target="_blank" class="link-btn">트위터 바로가기</a>`
-        },
         dcinside: {
             title: "💬 디시인사이드",
-            content: `<h3>DCInside Gallery</h3><br><a href="https://www.dcinside.com" target="_blank" class="link-btn">디시인사이드 방문하기</a>`
+            getContent: () => `
+                <div style="padding:16px;">
+                    <h3>💬 디시인사이드 갤러리</h3>
+                    <p style="color:#a1a1aa; margin-top:8px;">자유롭게 수다를 떠는 게시판 공간입니다.</p>
+                </div>
+            `
         },
         memo: {
             title: "📒 메모장",
-            content: `<h3>아이폰 메모</h3><br><p style="color:#a1a1aa;">오늘의 생각이나 기록하고 싶은 메모를 적어보세요.</p>`
+            getContent: () => `<div style="padding:16px;"><h3>아이폰 메모</h3><p style="color:#a1a1aa; margin-top:8px;">생각을 자유롭게 기록하세요.</p></div>`
         },
-        safari: {
-            title: "🧭 Safari",
-            content: `<h3>Safari Browser</h3><br><a href="https://google.com" target="_blank" class="link-btn">Google 검색하기</a>`
-        },
-        music: {
-            title: "🎵 음악",
-            content: `<h3>🎧 Now Playing</h3><br><p style="color:#a1a1aa;">Lofi Beats - Playing Live</p>`
-        },
+        phone: { title: "📞 전화", getContent: () => `<div style="text-align:center; padding:30px;"><h2>010-0000-0000</h2></div>` },
+        safari: { title: "🧭 Safari", getContent: () => `<div style="padding:16px;"><a href="https://google.com" target="_blank" class="link-btn">Google 검색하기</a></div>` },
+        music: { title: "🎵 음악", getContent: () => `<div style="padding:16px;"><h3>🎧 Lofi Chill</h3></div>` },
         guestbook: {
             title: "📝 방명록",
-            content: `
-                <input type="text" id="gbName" class="gb-input" placeholder="이름">
-                <textarea id="gbMsg" class="gb-input" placeholder="메시지를 남겨주세요!" rows="3"></textarea>
-                <button class="gb-btn" onclick="saveGuestbook()">등록하기</button>
-                <div id="gbList" style="margin-top:15px;"></div>
+            getContent: () => `
+                <div style="padding:16px;">
+                    <input type="text" id="gbName" class="write-input" placeholder="이름">
+                    <textarea id="gbMsg" class="write-input" placeholder="메시지를 남겨주세요!" rows="3"></textarea>
+                    <button class="write-btn" onclick="saveGuestbook()">등록하기</button>
+                    <div id="gbList" style="margin-top:15px;"></div>
+                </div>
             `
         }
     };
@@ -296,40 +385,31 @@
         const modal = document.getElementById('appModal');
         const data = appData[appName];
         document.getElementById('modalTitle').innerText = data.title;
-        document.getElementById('modalBody').innerHTML = data.content;
+        document.getElementById('modalBody').innerHTML = data.getContent();
         modal.classList.add('active');
         if(appName === 'guestbook') loadGuestbook();
     }
     function closeApp() { document.getElementById('appModal').classList.remove('active'); }
 
-    // 문자(메시지) 보내기 기능
     function sendMessage() {
         const input = document.getElementById('chatMsg');
         const msg = input.value.trim();
         if(!msg) return;
-
         const chatList = document.getElementById('chatList');
         const newBubble = document.createElement('div');
         newBubble.className = 'chat-bubble me';
         newBubble.innerText = msg;
         chatList.appendChild(newBubble);
-
         input.value = '';
-        chatList.scrollTop = chatList.scrollHeight;
     }
 
-    // 방명록
     function saveGuestbook() {
         const name = document.getElementById('gbName').value.trim();
         const msg = document.getElementById('gbMsg').value.trim();
         if(!name || !msg) return alert('내용을 입력해주세요!');
-
         const list = JSON.parse(localStorage.getItem('iphone_gb') || '[]');
         list.unshift({ name, msg, date: new Date().toLocaleDateString() });
         localStorage.setItem('iphone_gb', JSON.stringify(list));
-
-        document.getElementById('gbName').value = '';
-        document.getElementById('gbMsg').value = '';
         loadGuestbook();
     }
     function loadGuestbook() {
